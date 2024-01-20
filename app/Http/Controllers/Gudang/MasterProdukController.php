@@ -56,7 +56,7 @@ class MasterProdukController extends Controller
 
     public function store(ProductRequest $request){
         
-        @$chief_id = Auth::user()->employe->branch->id;
+        @$chief_id = Auth::user()->employe->chief_id;        
         if (@$chief_id != null){
             MasterProduk::create([
                 "chief_id" => $chief_id,
