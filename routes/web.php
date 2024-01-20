@@ -29,8 +29,8 @@ Route::controller(AuthenticationController::class)->group(function () {
     Route::post("/logout", "logout")->name("auth.logout");
 });
 
-Route::middleware(["auth", "user-role:superuser|superadmin"])->group(function(){
-    Route::controller(MasterCabangController::class)->group(function(){
+Route::middleware(["auth", "user-role:superuser|superadmin"])->group(function () {
+    Route::controller(MasterCabangController::class)->group(function () {
         Route::get("/cabang", "index")->name("super.cabang");
         Route::get("/cabang/create", "create")->name("super.cabang.create");
         Route::get("/cabang/{id}/edit", 'edit')->name("super.cabang.edit");
@@ -39,7 +39,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin"])->group(function(){
         Route::post("/cabang", "store");
         Route::get("/cabang/kepala/{id}/edit", "updateKepala")->name("super.cabang.kepala.edit");
     });
-    Route::controller(MasterAdminController::class)->group(function(){
+    Route::controller(MasterAdminController::class)->group(function () {
         Route::get("/admin", "index")->name("super.admin");
         Route::get("/admin/create", "create")->name("super.admin.create");
         Route::get("/admin/{id}/edit", 'edit')->name("super.admin.edit");
@@ -47,7 +47,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin"])->group(function(){
         Route::delete("/admin/{id}", "destroy")->name("super.admin.delete");
         Route::post("/admin", "store");
     });
-    Route::controller(MappingKepalaController::class)->group(function(){
+    Route::controller(MappingKepalaController::class)->group(function () {
         Route::get("/kepala", "index")->name("super.kepala");
         Route::get("/kepala/create", "create")->name("super.kepala.create");
         Route::get("/kepala/{id}/edit", 'edit')->name("super.kepala.edit");
@@ -57,8 +57,8 @@ Route::middleware(["auth", "user-role:superuser|superadmin"])->group(function(){
     });
 });
 
-Route::middleware(["auth", "user-role:superuser|superadmin|admin"])->group(function(){
-    Route::controller(KaryawanController::class)->group(function(){
+Route::middleware(["auth", "user-role:superuser|superadmin|admin"])->group(function () {
+    Route::controller(KaryawanController::class)->group(function () {
         Route::get("/karyawan/{type}", 'index')->name("admin.karyawan");
         Route::get("/karyawan/create/{type}", 'create')->name("admin.karyawan.create");
         Route::post("/karyawan/{type}", 'store');
@@ -67,8 +67,8 @@ Route::middleware(["auth", "user-role:superuser|superadmin|admin"])->group(funct
     });
 });
 
-Route::middleware(["auth", "user-role:superuser|superadmin|gudang"])->group(function(){
-    Route::controller(VendorController::class)->group(function(){
+Route::middleware(["auth", "user-role:superuser|superadmin|gudang"])->group(function () {
+    Route::controller(VendorController::class)->group(function () {
         Route::get("/vendor", 'index')->name("gudang.vendor");
         Route::get("/vendor/create", 'create')->name("gudang.vendor.create");
         Route::get("/vendor/{id}/edit", 'edit')->name("gudang.vendor.edit");
@@ -77,7 +77,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin|gudang"])->group(func
         Route::post("/vendor", 'store');
     });
 
-    Route::controller(MerkMobilController::class)->group(function(){
+    Route::controller(MerkMobilController::class)->group(function () {
         Route::get("/mobil/merk", "index")->name("gudang.mobil.merk");
         Route::get("/mobil/merk/create", "create")->name("gudang.mobil.merk.create");
         Route::post("/mobil/merk", "store");
@@ -86,7 +86,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin|gudang"])->group(func
         Route::delete("/mobil/merk/{id}", 'destroy')->name("gudang.mobil.merk.delete");
     });
 
-    Route::controller(TypeMobilController::class)->group(function(){
+    Route::controller(TypeMobilController::class)->group(function () {
         Route::get("/mobil/{id_merk}/type", "index")->name("gudang.mobil.type");
         Route::get("/mobil/{id_merk}/type/create", "create")->name("gudang.mobil.type.create");
         Route::post("/mobil/{id_merk}/type", "store");
@@ -95,7 +95,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin|gudang"])->group(func
         Route::delete("/mobil/type/{id_type}/{id_merk}", 'destroy')->name("gudang.mobil.type.delete");
     });
 
-    Route::controller(MerkProdukController::class)->group(function(){
+    Route::controller(MerkProdukController::class)->group(function () {
         Route::get("/product/merk", "index")->name("gudang.produk.merk");
         Route::get("/product/merk/create", "create")->name("gudang.produk.merk.create");
         Route::post("/product/merk", "store");
@@ -104,7 +104,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin|gudang"])->group(func
         Route::delete("/product/merk/{id_merk}", 'destroy')->name("gudang.produk.merk.delete");
     });
 
-    Route::controller(TypeProdukController::class)->group(function(){
+    Route::controller(TypeProdukController::class)->group(function () {
         Route::get("/produk/merk/{id_merk}/type", "index")->name("gudang.produk.type");
         Route::get("/produk/merk/{id_merk}/type/create", "create")->name("gudang.produk.type.create");
         Route::post("/produk/merk/{id_merk}/type", "store");
@@ -112,8 +112,8 @@ Route::middleware(["auth", "user-role:superuser|superadmin|gudang"])->group(func
         Route::put("/produk/merk/{id_merk}/type/{id_type}", "update")->name("gudang.produk.type.update");
         Route::delete("/produk/merk/{id_merk}/type/{id_type}", "destroy")->name("gudang.produk.type.delete");
     });
-    
-    Route::controller(MasterProdukController::class)->group(function(){
+
+    Route::controller(MasterProdukController::class)->group(function () {
         Route::get("/produk/master", "index")->name("gudang.produk.master");
         Route::get("/produk/master/create", "create")->name("gudang.produk.create");
         Route::post("/produk/master", "store");
@@ -123,8 +123,8 @@ Route::middleware(["auth", "user-role:superuser|superadmin|gudang"])->group(func
     });
 });
 
-Route::middleware(["auth", "user-role:superuser|superadmin|mekanik"])->group(function(){
-    Route::controller(CustomerController::class)->group(function(){
+Route::middleware(["auth", "user-role:superuser|superadmin|mekanik"])->group(function () {
+    Route::controller(CustomerController::class)->group(function () {
         Route::get("/pelanggan", "index")->name("mekanik.pelanggan");
         Route::get("/pelanggan/create", "create")->name("mekanik.pelanggan.create");
         Route::post("/pelanggan", "store")->name("mekanik.pelanggan");
@@ -132,8 +132,10 @@ Route::middleware(["auth", "user-role:superuser|superadmin|mekanik"])->group(fun
         Route::put("/pelanggan/{id}", "update")->name("mekanik.pelanggan.update");
         Route::delete("/pelanggan/{id}", "destroy")->name("mekanik.pelanggan.delete");
     });
+});
 
-    Route::controller(TransaksiController::class)->group(function(){
+Route::middleware(["auth", "user-role:superuser|superadmin|kasir|mekanik"])->group(function () {
+    Route::controller(TransaksiController::class)->group(function () {
         Route::get("/transaksi/{id_pelanggan}/byPelanggan", 'transaksiByPelanggan')->name("mekanik.transaksi.bypelanggan");
         Route::get("/transaksi/{id_pelanggan}/byPelanggan/create", 'transaksiByPelangganCreate')->name("mekanik.transaksi.bypelanggan.create");
         Route::post("/transaksi/{id_pelanggan}/byPelanggan/addProduk/{code}", 'addproduk')->name("mekanik.transaksi.bypelanggan.add");
@@ -143,21 +145,21 @@ Route::middleware(["auth", "user-role:superuser|superadmin|mekanik"])->group(fun
         Route::delete("/transaksi/{id_pelanggan}/byPelanggan/trashProduk/{code}", 'trashProduk')->name("mekanik.transaksi.bypelanggan.trash");
         Route::post("/transaksi/{id_pelanggan}/byPelanggan/store", 'storeProduk')->name("mekanik.transaksi.bypelanggan.store");
         Route::delete("/transaksi/{id_pelanggan}/byPelanggan/delete/{id_transaksi}", "destroyTransaksi")->name('mekanik.transaksi.bypelanggan.delete');
-        Route::get("/transaksi/{id_pelanggan}/detail/{id_transaksi}", 'detail')->name('mekanik.transaksi.detail');
+        Route::get("/transaksi/ /detail/{id_transaksi}", 'detail')->name('mekanik.transaksi.detail');
     });
-    
 });
 
-Route::middleware(["auth", "user-role:superuser|superadmin|kasir"])->group(function(){
-    Route::controller(KasirController::class)->group(function(){
+Route::middleware(["auth", "user-role:superuser|superadmin|kasir"])->group(function () {
+    Route::controller(KasirController::class)->group(function () {
         Route::get("/bayar", 'index')->name("kasir");
         Route::get("/bayar/{id_transaksi}", "bayar")->name("kasir.bayar");
         Route::put("/bayar/{id_transaksi}/create", "store_nota")->name("kasir.bayar.proses");
         Route::get("/kasir/riwayat", "riwayat")->name("kasir.riwayat");
         Route::get("/cetak/nota/{id_nota}", 'cetak_struk')->name("kasir.cetak.nota");
+        Route::get("/kasir/transaksi-new", 'newTransaksi')->name("kasir.transaksi.nonservice");
     });
 });
 
-Route::middleware(["auth", "user-role:superuser|superadmin|gudang|kasir"])->group(function(){
+Route::middleware(["auth", "user-role:superuser|superadmin|gudang|kasir"])->group(function () {
     Route::get("/produk/master/{code}/generate", [MasterProdukController::class, 'generate_barcode'])->name("master.produk.generate");
 });

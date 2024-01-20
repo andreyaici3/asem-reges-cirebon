@@ -11,12 +11,12 @@
 <x-app-layout menuActive="{{ $act }}">
     @section('breadcrumb')
         <div class="col-sm-6">
-            <h1 class="m-0">DATA TRANSAKSI</h1>
+            <h1 class="m-0">DATA SERVICE</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="">Home</a></li>
-                <li class="breadcrumb-item active">Data Transaksi</li>
+                <li class="breadcrumb-item active">Data Service</li>
             </ol>
         </div><!-- /.col -->
     @endsection
@@ -86,9 +86,27 @@
                                                 <td>#{{ $transaksi->id }} -
                                                     {{ Carbon\Carbon::parse($transaksi->created_at)->format('d-m-Y') }}
                                                 </td>
-                                                <td>{{ $transaksi->customer->name }}</td>
-                                                <td>{{ $transaksi->customer->number_plat }}</td>
-                                                <td>{{ $transaksi->mekanik->name }}</td>
+                                                <td>
+                                                    @if (@$transaksi->customer->name != null)
+                                                        {{ @$transaksi->customer->name }}
+                                                    @else
+                                                        Pelanggan Umum
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if (@$transaksi->customer->number_plat != null)
+                                                        {{ @$transaksi->customer->number_plat }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if (@$transaksi->mekanik->name != null)
+                                                        {{ @$transaksi->mekanik->name }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
                                                 <td>Rp {{ number_format($transaksi->total_purchased, 2, ',', '.') }}
                                                 </td>
                                                 <td>
@@ -97,10 +115,11 @@
                                                             class="btn btn-primary btn-sm"><i
                                                                 class="fas fa-money-bill-alt"></i> Bayar</a>
                                                     @elseif($transaksi->status == 'paid')
-                                                    <a href="{{ route('kasir.cetak.nota', ['id_nota' => $transaksi->nota->id]) }}"
-                                                            class="btn btn-success btn-sm"><i class="fas fa-print"></i> Cetak Ulang Nota</a>
-                                                            <a href=""
-                                                            class="btn btn-primary btn-sm"><i class="fas fa-eye"></i> Detail</a>
+                                                        <a target="_blank" href="{{ route('kasir.cetak.nota', ['id_nota' => $transaksi->nota->id]) }}"
+                                                            class="btn btn-success btn-sm"><i class="fas fa-print"></i>
+                                                            Cetak Ulang Nota</a>
+                                                        <a href="" class="btn btn-primary btn-sm"><i
+                                                                class="fas fa-eye"></i> Detail</a>
                                                     @endif
                                                 </td>
                                             </tr>

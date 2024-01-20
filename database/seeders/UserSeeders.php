@@ -30,7 +30,7 @@ class UserSeeders extends Seeder
                 'email' => "yannaakbar@gmail.com",
                 'email_verified_at' => now(),
                 'password' => Hash::make("password"),
-                "role" => "superuser",
+                "role" => "superadmin",
                 'remember_token' => Str::random(10),
             ],
             [

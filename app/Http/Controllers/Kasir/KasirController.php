@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Kasir;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
+use App\Models\MasterProduk;
 use App\Models\Nota;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -76,5 +79,15 @@ class KasirController extends Controller
         return view('kasir.nota', [
             'nota' => Nota::find($id_nota),
         ]);
+    }
+
+    public function newTransaksi()
+    {
+        @$chief = Auth::user()->employe->chief_id;
+        return view('kasir.newtransaksi', [
+            "customer" => Customer::where('chief_id', $chief)->get(),
+            "carts" => session()->get("cart", []),
+            "product" => MasterProduk::where('chief_id', $chief)->get(),
+        ]);  
     }
 }

@@ -13,7 +13,7 @@ class CreateCustomerTransactionTable extends Migration
     {
         Schema::create('customer_transaction', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Customer::class, "customer_id")->constrained('customer');
+            $table->foreignIdFor(Customer::class, "customer_id")->nullable()->constrained('customer');
             $table->foreignIdFor(ChiefBranch::class, "chief_id")->constrained("chief_branch");
             $table->string("description")->nullable();
             $table->double("total_price")->nullable();
@@ -22,7 +22,7 @@ class CreateCustomerTransactionTable extends Migration
             $table->double("total_purchased");
             $table->integer("total_item");
             $table->enum("role", ["mekanik", "kasir"])->default("mekanik");
-            $table->foreignIdFor(User::class, "mekanik_id")->constrained("users");
+            $table->foreignIdFor(User::class, "mekanik_id")->nullable()->constrained("users");
             $table->foreignIdFor(User::class, "kasir_id")->nullable()->constrained("users");
             $table->enum("status", ["waiting", "paid", "unpaid", "canceled"])->default("waiting");
             $table->timestamps();

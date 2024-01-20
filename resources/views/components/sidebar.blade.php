@@ -64,9 +64,7 @@
                         </li>
                     @endif
 
-                    @if (Auth::user()->role == 'superadmin' ||
-                            Auth::user()->role == 'superuser' ||
-                            (Auth::user()->role == 'admin' && @$kepala->branch != null))
+                    @if (Auth::user()->role == 'admin' && @$kepala->branch != null)
                         <li class="nav-header">Admin</li>
                         <li class="nav-item {{ $menuOpen == 'karyawan' ? 'menu-open' : '' }}">
                             <a href="#" class="nav-link {{ $menuOpen == 'karyawan' ? 'active' : '' }}">
@@ -102,7 +100,7 @@
                         </li>
                     @endif
 
-                    @if (Auth::user()->role == 'superadmin' || Auth::user()->role == 'superuser' || Auth::user()->role == 'gudang')
+                    @if (Auth::user()->role == 'gudang')
                         <li class="nav-header">Gudang</li>
                         <li class="nav-item">
                             <a href="{{ route('gudang.vendor') }}"
@@ -161,7 +159,7 @@
                     @endif
 
 
-                    @if (Auth::user()->role == 'superadmin' || Auth::user()->role == 'superuser' || Auth::user()->role == 'mekanik')
+                    @if (Auth::user()->role == 'mekanik')
                         <li class="nav-header">Mekanik</li>
                         <li class="nav-item">
                             <a href="{{ route('mekanik.pelanggan') }}"
@@ -174,14 +172,24 @@
                         </li>
                     @endif
 
-                    @if (Auth::user()->role == 'superadmin' || Auth::user()->role == 'superuser' || Auth::user()->role == 'kasir')
+                    @if (Auth::user()->role == 'kasir')
                         <li class="nav-header">Kasir</li>
+                        <li class="nav-item">
+                            <a href="{{ route('kasir.transaksi.nonservice') }}"
+                                class="nav-link {{ $menuActive == 'nonservice' ? 'active' : '' }}">
+                                <i class="fas fa-shopping-cart nav-icon"></i>
+                                <p>
+                                    Transaksi
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('kasir') }}"
                                 class="nav-link {{ $menuActive == 'transaksi' ? 'active' : '' }}">
-                                <i class="fas fa-shopping-cart nav-icon"></i>
+
+                                <i class="fab fa-usps nav-icon"></i>
                                 <p>
-                                    Data Transaksi
+                                    Data Service
                                 </p>
                             </a>
                         </li>
@@ -194,8 +202,6 @@
                                 </p>
                             </a>
                         </li>
-
-                        
                     @endif
 
                     <li class="nav-header">Pengaturan</li>

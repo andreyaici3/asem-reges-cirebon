@@ -126,7 +126,13 @@
                 <td>{{ Carbon\Carbon::parse($nota->created_at)->format('d-m-Y h:i:s') }}</td>
             </tr>
             <tr>
-                <td colspan="3">[{{ $nota->transaksi->customer->id }}] {{ $nota->transaksi->customer->name }}</td>
+                <td colspan="3">
+                    @if (isset($nota->transaksi->customer->id))
+                        [{{ @$nota->transaksi->customer->id }}] {{ @$nota->transaksi->customer->name }}
+                    @else
+                        [UMUM] - Tanpa Nama
+                    @endif
+                </td>
             </tr>
         </table>
         <br>

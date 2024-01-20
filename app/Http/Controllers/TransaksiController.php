@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\MasterProduk;
+use App\Models\Nota;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
@@ -68,7 +69,7 @@ class TransaksiController extends Controller
                         $cart[$code]['qty']++;
                         session()->put('cart', $cart);
                         return redirect()->back()->with('sukses', $cart[$code]['name'] . " Berhasil Ditambah");
-                    } else  {
+                    } else {
                         return redirect()->back()->with('gagal', 'Stok Produk ' . $produk->name . " Tidak Tersedia");
                     }
                 } else {
@@ -127,24 +128,49 @@ class TransaksiController extends Controller
 
     public function storeProduk(Request $request, $id_pelanggan)
     {
+
         $request->validate([
             "price_service" => ['required']
         ]);
+
+        if ($id_pelanggan == 0) {
+            $idP = null;
+        } else {
+            $idP = $id_pelanggan;
+        }
+
+        if (isset($request->kasir_mode)) {
+            $kasir_id = Auth::user()->id;
+            $status = "paid";
+            $mekanik_id = null;
+            $role = "kasir";
+            $status_udpate = "paid";
+            $request->validate([
+                'jmlBayar' => ['required'],
+            ]);
+        } else {
+            $kasir_id = null;
+            $status = "waiting";
+            $mekanik_id = Auth::user()->id;
+            $role = "mekanik";
+            $status_udpate = "unpaid";
+        }
+
 
         $totalHargaBeli = 0;
         $totalHargaJual = 0;
         $totalItem = 0;
         //Tambahkan Transakksi
         $transaksi = Transaction::create([
-            'customer_id' => $id_pelanggan,
+            'customer_id' => $idP,
             'description' => $request->deskripsi,
             'price_service' => $request->price_service,
-            'role' => 'mekanik',
-            'kasir_id' => null,
-            'status' => 'waiting',
+            'role' => $role,
+            'kasir_id' => $kasir_id,
+            'status' => $status,
             "total_purchased" => 0,
             "total_item" => 0,
-            "mekanik_id" => Auth::user()->id,
+            "mekanik_id" => $mekanik_id,
             "chief_id" => Auth::user()->employe->chief_id,
         ]);
         $produks = session()->get('cart', []);
@@ -168,20 +194,45 @@ class TransaksiController extends Controller
                 "stok" => $stok_baru,
             ]);
 
-            unset($produks[$produk['code']]);
-            session()->put('cart', $produks);
+            if (!isset($request->kasir_mode)){
+                unset($produks[$produk['code']]);
+                session()->put('cart', $produks);
+            }
         }
 
         Transaction::find($transaksi->id)->update([
             "total_price" => $totalHargaBeli,
             "total_selling" => $totalHargaJual,
             "total_purchased" => $totalHargaJual + $request->price_service,
-            "status" => "unpaid",
+            "status" => $status_udpate,
             "total_item" => $totalItem,
         ]);
 
+        $trx = Transaction::find($transaksi->id);
 
-        return redirect()->to(route("mekanik.transaksi.bypelanggan", ['id_pelanggan' => $id_pelanggan]))->with("sukses", "Transaksi Berhasil dan Sudah disetorkan ke kasir untuk pembayaran");
+        if (isset($request->kasir_mode)) {
+
+            if ($request->jmlBayar < $trx->total_purchased) {
+                Transaction::find($transaksi->id)->delete();
+                return redirect()->back()->with("gagal", "Periksa Kembali Jumlah Uang Yang Dimasukan");
+            }
+
+            $nota = Nota::create([
+                "transaction_id" => $trx->id,
+                "total_payment" => $trx->total_purchased,
+                "payment_amount" => $request->jmlBayar,
+                "change_money" => $request->jmlBayar - $trx->total_purchased,
+            ]);
+
+            foreach ($produks as $produk){
+                unset($produks[$produk['code']]);
+                session()->put('cart', $produks);
+            }
+
+            return redirect()->to(route("kasir.cetak.nota", ["id_nota" => $nota->id]))->with("sukses", "Pembayaran Berhasil Dilakukan");
+        } else {
+            return redirect()->to(route("mekanik.transaksi.bypelanggan", ['id_pelanggan' => $id_pelanggan]))->with("sukses", "Transaksi Berhasil dan Sudah disetorkan ke kasir untuk pembayaran");
+        }
     }
 
     public function destroyTransaksi($id_pelanggan, $id_transaksi)
