@@ -230,8 +230,8 @@
         t = null;
 
         function printOut() {
-            window.print();
-            t = setTimeout("self.close()", lama);
+            {{-- window.print();
+            t = setTimeout("self.close()", lama); --}}
         }
     </script>
 </body>

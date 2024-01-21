@@ -145,7 +145,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin|kasir|mekanik"])->gro
         Route::delete("/transaksi/{id_pelanggan}/byPelanggan/trashProduk/{code}", 'trashProduk')->name("mekanik.transaksi.bypelanggan.trash");
         Route::post("/transaksi/{id_pelanggan}/byPelanggan/store", 'storeProduk')->name("mekanik.transaksi.bypelanggan.store");
         Route::delete("/transaksi/{id_pelanggan}/byPelanggan/delete/{id_transaksi}", "destroyTransaksi")->name('mekanik.transaksi.bypelanggan.delete');
-        Route::get("/transaksi/ /detail/{id_transaksi}", 'detail')->name('mekanik.transaksi.detail');
+        Route::get("/transaksi/{id_pelanggan}/detail/{id_transaksi}", 'detail')->name('mekanik.transaksi.detail');
     });
 });
 
