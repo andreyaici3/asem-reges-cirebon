@@ -26,7 +26,7 @@
 <body>
     <div class="wrapper">
     
-        <img src="data:image/png;base64,{{DNS1D::getBarcodePNG($product->code, 'C39', 0.7, 40, array(1,1,1), true)}}" alt="barcode" />
+        <img src="data::image/png;base64,{{DNS1D::getBarcodePNG($product->code, 'C39', 0.7, 40, array(1,1,1), true)}}" alt="barcode" />
         <p>{{ $product->name }}</p>
         
         
