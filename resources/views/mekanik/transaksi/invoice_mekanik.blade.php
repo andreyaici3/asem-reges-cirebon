@@ -24,7 +24,8 @@
                             <div class="col-12">
                                 <h4>
                                     <b>INVOICE PEMBAYARAN</b>
-                                    <small class="float-right">Date: {{ Carbon\Carbon::parse($transaksi->created_at)->format('d-m-Y') }}</small>
+                                    <small class="float-right">Date:
+                                        {{ Carbon\Carbon::parse($transaksi->created_at)->format('d-m-Y') }}</small>
                                 </h4>
                             </div>
 
@@ -58,6 +59,8 @@
                                 <b>Status:</b> -
                                 @if ($transaksi->status == 'unpaid')
                                     <span class="badge badge-lg bg-danger">{{ strtoupper($transaksi->status) }}</span>
+                                @elseif($transaksi->status == 'paid')
+                                    <span class="badge badge-lg bg-success">{{ strtoupper($transaksi->status) }}</span>
                                 @endif
                             </div>
 
@@ -79,7 +82,7 @@
                                     <tbody>
                                         @php
                                             $subtotal = 0;
-                                            
+
                                         @endphp
                                         @foreach ($transaksi->detail as $value)
                                             @php
@@ -125,7 +128,9 @@
                                         </tr>
                                         <tr>
                                             <th>Total:</th>
-                                            <td><span style="font-weight: bold;" class="totbyr">Rp {{ number_format(($transaksi->price_service + $subtotal), 2, ',', '.') }}</span></td>
+                                            <td><span style="font-weight: bold;" class="totbyr">Rp
+                                                    {{ number_format($transaksi->price_service + $subtotal, 2, ',', '.') }}</span>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -138,7 +143,7 @@
                             <div class="col-12">
                                 <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i
                                         class="fas fa-print"></i> Print</a>
-                               
+
                                 <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
                                     <i class="fas fa-download"></i> Generate PDF
                                 </button>
