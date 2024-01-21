@@ -141,7 +141,7 @@
 
                         <div class="row no-print">
                             <div class="col-12">
-                                <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i
+                                <a href="{{ route('kasir.cetak.nota', ['id_nota' => $transaksi->nota->id]) }}" rel="noopener" target="_blank" class="btn btn-default"><i
                                         class="fas fa-print"></i> Print</a>
 
                                 <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">

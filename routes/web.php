@@ -147,6 +147,10 @@ Route::middleware(["auth", "user-role:superuser|superadmin|kasir|mekanik"])->gro
         Route::delete("/transaksi/{id_pelanggan}/byPelanggan/delete/{id_transaksi}", "destroyTransaksi")->name('mekanik.transaksi.bypelanggan.delete');
         Route::get("/transaksi/{id_pelanggan}/detail/{id_transaksi}", 'detail')->name('mekanik.transaksi.detail');
     });
+
+    Route::controller(KasirController::class)->group(function(){
+        Route::get("/cetak/nota/{id_nota}", 'cetak_struk')->name("kasir.cetak.nota");
+    });
 });
 
 Route::middleware(["auth", "user-role:superuser|superadmin|kasir"])->group(function () {
@@ -155,7 +159,6 @@ Route::middleware(["auth", "user-role:superuser|superadmin|kasir"])->group(funct
         Route::get("/bayar/{id_transaksi}", "bayar")->name("kasir.bayar");
         Route::put("/bayar/{id_transaksi}/create", "store_nota")->name("kasir.bayar.proses");
         Route::get("/kasir/riwayat", "riwayat")->name("kasir.riwayat");
-        Route::get("/cetak/nota/{id_nota}", 'cetak_struk')->name("kasir.cetak.nota");
         Route::get("/kasir/transaksi-new", 'newTransaksi')->name("kasir.transaksi.nonservice");
     });
 });
