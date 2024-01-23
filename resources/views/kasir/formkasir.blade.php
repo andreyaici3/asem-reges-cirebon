@@ -96,7 +96,7 @@
         <input type="number" name="price_service"
             class="form-control {{ $errors->has('price_service') ? 'is-invalid' : '' }}" id="estimasi_jasa_pasang"
             placeholder="Jasa Service" aria-describedby="estimasi_jasa_pasang-error" aria-invalid="false"
-            value="{{ old('price_service') ?? @$merk->price_service }}">
+            value="{{ old('price_service') ?? 0 }}">
         <span id="estimasi_jasa_pasang-error" class="error invalid-feedback">
             {{ $errors->has('price_service') ? '*) ' . $errors->first('price_service') : '' }}</span>
     </div>

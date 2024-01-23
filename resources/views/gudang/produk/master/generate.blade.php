@@ -36,7 +36,7 @@
     <script src="/dist/js/print.min.js"></script>
     <script>
         $(function(){
-            {{-- $('.wrapper').jqprint();  --}}
+                $('.wrapper').jqprint(); 
         })// sectionID is ID of the section
     </script>
 </body>
