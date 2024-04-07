@@ -58,12 +58,36 @@ Route::middleware(["auth", "user-role:superuser|superadmin"])->group(function ()
 });
 
 Route::middleware(["auth", "user-role:superuser|superadmin|admin"])->group(function () {
+    Route::controller(MerkProdukController::class)->group(function () {
+        Route::get("/product/merk", "index")->name("admin.produk.merk");
+        Route::get("/product/merk/create", "create")->name("admin.produk.merk.create");
+        Route::post("/product/merk", "store");
+        Route::get("/product/merk/{id_merk}/edit", "edit")->name("admin.produk.merk.edit");
+        Route::put("/product/merk/{id_merk}", "update")->name("admin.produk.merk.update");
+        Route::delete("/product/merk/{id_merk}", 'destroy')->name("admin.produk.merk.delete");
+        Route::get("/product/merk/{id}/detail", "get_data_by_id")->name("admin.produk.merk.detail");
+    });
     Route::controller(KaryawanController::class)->group(function () {
         Route::get("/karyawan/{type}", 'index')->name("admin.karyawan");
         Route::get("/karyawan/create/{type}", 'create')->name("admin.karyawan.create");
         Route::post("/karyawan/{type}", 'store');
         Route::get("/karyawan/{type}/edit", 'edit')->name("admin.karyawan.edit");
         Route::delete("/kepala/{type}/{id}", "destroy")->name("admin.karyawan.delete");
+    });
+
+    Route::controller(TypeProdukController::class)->group(function () {
+        Route::post("/produk/type", "store")->name("admin.produk.type");
+        Route::put("/produk/merk/{id_merk}/type/{id_type}", "update")->name("admin.produk.type.update");
+        Route::delete("/produk/merk/{id_merk}/type/{id_type}", "destroy")->name("admin.produk.type.delete");
+    });
+
+    Route::controller(MasterProdukController::class)->group(function () {
+        Route::get("/produk/master", "index")->name("gudang.produk.master");
+        Route::get("/produk/master/create", "create")->name("gudang.produk.create");
+        Route::post("/produk/master", "store");
+        Route::get("/produk/master/{id}/edit", "edit")->name("gudang.produk.master.edit");
+        Route::put("/produk/master/{id}", "update")->name("gudang.produk.master.update");
+        Route::delete("/produk/master/{id}", "destroy")->name("gudang.produk.master.delete");
     });
 });
 
@@ -95,32 +119,11 @@ Route::middleware(["auth", "user-role:superuser|superadmin|gudang"])->group(func
         Route::delete("/mobil/type/{id_type}/{id_merk}", 'destroy')->name("gudang.mobil.type.delete");
     });
 
-    Route::controller(MerkProdukController::class)->group(function () {
-        Route::get("/product/merk", "index")->name("gudang.produk.merk");
-        Route::get("/product/merk/create", "create")->name("gudang.produk.merk.create");
-        Route::post("/product/merk", "store");
-        Route::get("/product/merk/{id_merk}/edit", "edit")->name("gudang.produk.merk.edit");
-        Route::put("/product/merk/{id_merk}", "update")->name("gudang.produk.merk.update");
-        Route::delete("/product/merk/{id_merk}", 'destroy')->name("gudang.produk.merk.delete");
-    });
 
-    Route::controller(TypeProdukController::class)->group(function () {
-        Route::get("/produk/merk/{id_merk}/type", "index")->name("gudang.produk.type");
-        Route::get("/produk/merk/{id_merk}/type/create", "create")->name("gudang.produk.type.create");
-        Route::post("/produk/merk/{id_merk}/type", "store");
-        Route::get("/produk/merk/{id_merk}/type/{id_type}", "edit")->name("gudang.produk.type.edit");
-        Route::put("/produk/merk/{id_merk}/type/{id_type}", "update")->name("gudang.produk.type.update");
-        Route::delete("/produk/merk/{id_merk}/type/{id_type}", "destroy")->name("gudang.produk.type.delete");
-    });
 
-    Route::controller(MasterProdukController::class)->group(function () {
-        Route::get("/produk/master", "index")->name("gudang.produk.master");
-        Route::get("/produk/master/create", "create")->name("gudang.produk.create");
-        Route::post("/produk/master", "store");
-        Route::get("/produk/master/{id}/edit", "edit")->name("gudang.produk.master.edit");
-        Route::put("/produk/master/{id}", "update")->name("gudang.produk.master.update");
-        Route::delete("/produk/master/{id}", "destroy")->name("gudang.produk.master.delete");
-    });
+    
+
+    
 });
 
 Route::middleware(["auth", "user-role:superuser|superadmin|mekanik"])->group(function () {
@@ -148,7 +151,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin|kasir|mekanik"])->gro
         Route::get("/transaksi/{id_pelanggan}/detail/{id_transaksi}", 'detail')->name('mekanik.transaksi.detail');
     });
 
-    Route::controller(KasirController::class)->group(function(){
+    Route::controller(KasirController::class)->group(function () {
         Route::get("/cetak/nota/{id_nota}", 'cetak_struk')->name("kasir.cetak.nota");
     });
 });

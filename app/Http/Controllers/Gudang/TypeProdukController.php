@@ -10,69 +10,36 @@ use Illuminate\Support\Facades\Auth;
 
 class TypeProdukController extends Controller
 {
-    public function index($id_merk)
-    {
-        @$chief_id = Auth::user()->branch->id;
-        if (@$chief_id == null) {
-            $type_produk = ProductType::where("product_merk_id", $id_merk)->get();
-        } else {
-            $type_produk = ProductType::where([
-                ["chief_id", "=", $chief_id],
-                ["product_merk_id", "=", $id_merk]
-            ])->get();
-        }
-        return view("gudang.produk.type.index", [
-            "types" => $type_produk,
-            "merk" => ProductMerk::find($id_merk),
-            "nomor"=> 1,
-        ]);
-    }
-
-    public function create($id_merk)
-    {
-        return view("gudang.produk.type.create", [
-            "merk" => ProductMerk::find($id_merk)
-        ]);
-    }
-
-    public function store(Request $request, $id_merk)
+    public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'subName' => 'required',
         ]);
 
         try {
             ProductType::create([
-                "name"     => $request->name,
-                "product_merk_id" => $id_merk
+                "name"     => $request->subName,
+                "product_merk_id" => $request->product_merk_id
             ]);
-            return redirect()->to(route('gudang.produk.type', ["id_merk" => $id_merk]))->with('sukses', "Data Type Produk Berhasil Ditambahkan");
+            return redirect()->to(route('admin.produk.merk'))->with('sukses', "Data Sub Merk ($request->subName) Berhasil Ditambahkan");
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->to(route('gudang.produk.type', ["id_merk" => $id_merk]))->with('gagal', "Data Type Produk Gagal Ditambahkan");
+            return redirect()->to(route('admin.produk.merk'))->with('gagal', "Data Sub Merk ($request->subName) Gagal Ditambahkan");
         }
-    }
-
-    public function edit($id_merk,$id_type)
-    {
-        return view("gudang.produk.type.edit", [
-            "type" => ProductType::find($id_type),
-            "merk" => ProductMerk::find($id_merk),
-        ]);
     }
 
     public function update(Request $request, $id_merk, $id_type)
     {
         $request->validate([
-            'name' => 'required',
+            'subName' => 'required',
         ]);
 
         try {
             ProductType::find($id_type)->update([
-                "name"     => $request->name,
+                "name"     => $request->subName,
             ]);
-            return redirect()->to(route('gudang.produk.type', ["id_merk" => $id_merk]))->with('sukses', "Data Type Produk Berhasil Diubah");
+            return redirect()->to(route('admin.produk.merk'))->with('sukses', "Data Type Produk Berhasil Diubah");
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->to(route('gudang.produk.type', ["id_merk" => $id_merk]))->with('gagal', "Data Type Produk Gagal Diubah");
+            return redirect()->to(route('admin.produk.merk'))->with('gagal', "Data Type Produk Gagal Diubah");
         }
     }
 
@@ -80,9 +47,9 @@ class TypeProdukController extends Controller
     {
         try {
             ProductType::find($id_type)->delete();
-            return redirect()->to(route('gudang.produk.type', ["id_merk" => $id_merk]))->with('sukses', "Data Type Produk Berhasil Diubah");
+            return redirect()->to(route('admin.produk.merk'))->with('sukses', "Data Type Produk Berhasil Dihapus");
         } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->to(route('gudang.produk.type', ["id_merk" => $id_merk]))->with('gagal', "Data Type Produk Gagal Diubah");
+            return redirect()->to(route('admin.produk.merk'))->with('gagal', "Data Type Produk Gagal Dihapus");
         }
     }
 }
