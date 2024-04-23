@@ -20,7 +20,7 @@
                         <h3 class="card-title">Mohon Isi Data Dengan Benar</h3>
                     </div>
 
-                    <form method="POST" action="{{ route('gudang.produk.master.update', ['id' => $product->id]) }}">
+                    <form method="POST" action="{{ route('gudang.produk.master.update', ['id' => $product->id]) }}" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         @include('gudang.produk.master.form')

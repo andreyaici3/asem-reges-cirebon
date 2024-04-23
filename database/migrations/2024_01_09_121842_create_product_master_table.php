@@ -20,6 +20,9 @@ class CreateProductMasterTable extends Migration
             $table->string("name");
             $table->bigInteger("price");
             $table->bigInteger("selling");
+            $table->integer("garansi")->nullable();
+            $table->string("gambar")->nullable();
+            $table->integer("discount")->default(0);
             $table->timestamps();
         });
     }

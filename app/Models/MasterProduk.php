@@ -10,7 +10,7 @@ class MasterProduk extends Model
     use HasFactory;
 
     protected $table = "product_master";
-    protected $fillable = ["chief_id", "code","price", "name", "price", "selling", "product_type_id", "vendor_id", "stok"];
+    protected $fillable = ["chief_id", "code","price", "name", "price", "selling", "product_type_id", "vendor_id", "stok", "garansi", "gambar", "discount"];
 
     public function available(){
         return $this->hasMany(AvailableProduct::class, 'product_master_code', 'code');

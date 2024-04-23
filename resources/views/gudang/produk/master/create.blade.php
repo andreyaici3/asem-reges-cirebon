@@ -1,15 +1,15 @@
 <x-app-layout menuActive="master" menuOpen="produk">
     @section('breadcrumb')
-        <div class="col-sm-6">
-            <h1 class="m-0">TAMBAH MASTER PRODUK</h1>
-        </div><!-- /.col -->
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('gudang.produk.master') }}">Data Master Produk</a></li>
-                <li class="breadcrumb-item active">Tambah Master Produk</li>
-            </ol>
-        </div><!-- /.col -->
+    <div class="col-sm-6">
+        <h1 class="m-0">TAMBAH MASTER PRODUK</h1>
+    </div><!-- /.col -->
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('gudang.produk.master') }}">Data Master Produk</a></li>
+            <li class="breadcrumb-item active">Tambah Master Produk</li>
+        </ol>
+    </div><!-- /.col -->
     @endsection
 
     <div class="container-fluid">
@@ -20,7 +20,7 @@
                         <h3 class="card-title">Mohon Isi Data Dengan Benar</h3>
                     </div>
 
-                    <form method="POST" action="{{ route('gudang.produk.master') }}">
+                    <form method="POST" action="{{ route('gudang.produk.master') }}" enctype="multipart/form-data">
                         @csrf
                         @include('gudang.produk.master.form')
                     </form>
@@ -30,27 +30,36 @@
     </div>
 
     @section('js')
-        <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/plugins/moment/moment.min.js"></script>
 
-        <script src="   /plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="/plugins/inputmask/jquery.inputmask.min.js"></script>
 
-        <script src="   /plugins/select2/js/select2.full.min.js"></script>
-        <script>
-            $(function() {
-                //Initialize Select2 Elements
-                $('.select2').select2({
-                    theme: 'bootstrap4'
-                })
-                $('.select2bs4').select2({
-                    theme: 'bootstrap4'
-                })
+    <script src="/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
+    <script>
+        $(function() {
+            //Initialize Select2 Elements
+            $('.select2').select2({
+                theme: 'bootstrap4'
+            })
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+            $('#reservationdate').datetimepicker({
+                format: 'L'
             });
-        </script>
+        });
+    </script>
     @endsection
 
     @section('css')
-        <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
-        <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
     @endsection
 
 </x-app-layout>
