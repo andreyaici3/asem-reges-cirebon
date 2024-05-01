@@ -136,69 +136,90 @@
             </tr>
         </table>
         <br>
-        @php
-            $tItem = 'Item' . str_repeat('&nbsp;', 12 - strlen('Item'));
-            $tQty = 'Qty' . str_repeat('&nbsp;', 6 - strlen('Qty'));
-            $tHarga = str_repeat('&nbsp;', 9 - strlen('Harga')) . 'Harga';
-            $tTotal = str_repeat('&nbsp;', 10 - strlen('Total')) . 'Total';
-            $caption = $tItem . $tQty . $tHarga . $tTotal;
-        @endphp
-        <table cellpadding="0" cellspacing="0" style="width:100%">
-            <tr>
-                <td align="left" class="txt-left">
-                    {!! $caption !!}
-                </td>
-            </tr>
-            <tr>
-                <td align="left" class="txt-left">
-                    {{ str_repeat('=', 38) }}
-                </td>
-            </tr>
-            @foreach ($nota->transaksi->detail as $value)
+        @if ($nota->transaksi->total_item != 0)
+            @php
+                $tItem = 'Item' . str_repeat('&nbsp;', 12 - strlen('Item'));
+                $tQty = 'Qty' . str_repeat('&nbsp;', 6 - strlen('Qty'));
+                $tHarga = str_repeat('&nbsp;', 9 - strlen('Harga')) . 'Harga';
+                $tTotal = str_repeat('&nbsp;', 10 - strlen('Total')) . 'Total';
+                $caption = $tItem . $tQty . $tHarga . $tTotal;
+            @endphp
+            <table cellpadding="0" cellspacing="0" style="width:100%">
                 <tr>
                     <td align="left" class="txt-left">
-                        @php
-                            echo $value->produk->name;
-                            echo str_repeat('&nbsp;', 5);
-                            echo $value->qty;
-                            echo str_repeat('&nbsp;', 5);
-                            echo number_format($value->selling, '0', ',', '.');
-                            echo str_repeat('&nbsp;', 5);
-                            echo number_format($value->selling * $value->qty, '0', ',', '.');
-                        @endphp
-
+                        {!! $caption !!}
                     </td>
-
                 </tr>
-            @endforeach
+                <tr>
+                    <td align="left" class="txt-left">
+                        {{ str_repeat('=', 38) }}
+                    </td>
+                </tr>
 
-        </table>
+                @foreach ($nota->transaksi->detail as $value)
+                    <tr>
+                        <td align="left" class="txt-left">
+                            @php
+                                echo $value->produk->name;
+                                echo str_repeat('&nbsp;', 5);
+                                echo $value->qty;
+                                echo str_repeat('&nbsp;', 5);
+                                echo number_format($value->selling, '0', ',', '.');
+                                echo str_repeat('&nbsp;', 5);
+                                echo number_format($value->selling * $value->qty, '0', ',', '.');
+                            @endphp
+
+                        </td>
+
+                    </tr>
+                @endforeach
+            </table>
+        @else
+            Keterangan Transaksi <br>
+            - {{ $nota->transaksi->description }} <br>
+            - {{ $nota->transaksi->estimasi_pengerjaan }}
+            <br>
+        @endif
         {{ str_repeat('-', '37') }}
         <table cellpadding="0" cellspacing="0" style="width:100%">
-            <tr>
-                <td class="txt-left">
-                    Sub Total
-                </td>
-                <td class="txt-right">
-                    {{ number_format($value->transaksi->total_selling) }}
-                </td>
-            </tr>
-            <tr>
-                <td class="txt-left">
-                    Jasa Service
-                </td>
-                <td class="txt-right">
-                    {{ number_format($value->transaksi->price_service) }}
-                </td>
-            </tr>
-            <tr>
-                <td class="txt-left">
-                    Grand Total
-                </td>
-                <td class="txt-right">
-                    {{ number_format($value->transaksi->total_purchased) }}
-                </td>
-            </tr>
+            @if ($nota->transaksi->total_item != 0)
+                <tr>
+                    <td class="txt-left">
+                        Sub Total
+                    </td>
+                    <td class="txt-right">
+                        {{ number_format($nota->transaksi->total_selling) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="txt-left">
+                        Jasa Service
+                    </td>
+                    <td class="txt-right">
+                        {{ number_format($nota->transaksi->price_service) }}
+                    </td>
+                </tr>
+            @endif
+            @if ($nota->transaksi->total_item == 0)
+                <tr>
+                    <td class="txt-left">
+                        Jasa Service + discount ({{ number_format($nota->discount) }}%)
+                    </td>
+                    <td class="txt-right">
+                        {{ number_format($nota->transaksi->price_service) }}
+                    </td>
+                </tr>
+            @endif
+            @if ($nota->transaksi->total_item != 0)
+                <tr>
+                    <td class="txt-left">
+                        Grand Total + discount ({{ number_format($nota->discount) }}%)
+                    </td>
+                    <td class="txt-right">
+                        {{ number_format($nota->transaksi->total_purchased) }}
+                    </td>
+                </tr>
+            @endif
             <tr>
                 <td class="txt-left">
                     Bayar

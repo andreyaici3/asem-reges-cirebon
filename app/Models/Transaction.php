@@ -11,7 +11,7 @@ class Transaction extends Model
 
     protected $table = "customer_transaction";
 
-    protected $fillable = ["customer_id", "description", "total_price", "total_selling", "price_service", "total_purchased", "total_item", "role", "mekanik_id", "kasir_id", "status", "chief_id"];
+    protected $fillable = ["customer_id", "description", "total_price", "total_selling", "price_service", "total_purchased", "total_item", "role", "mekanik_id", "kasir_id", "status", "chief_id", "estimasi_pengerjaan"];
 
     public function mekanik()
     {
@@ -37,5 +37,10 @@ class Transaction extends Model
     public function kasir()
     {
         return $this->belongsTo(User::class, "kasir_id");
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, "mekanik_id");
     }
 }

@@ -73,6 +73,7 @@
                                             <th>Plat Nomor</th>
                                             <th>Nama Mekanik</th>
                                             <th>Jumlah Bayar</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -104,18 +105,41 @@
                                                     @if (@$transaksi->mekanik->name != null)
                                                         {{ @$transaksi->mekanik->name }}
                                                     @else
-                                                        -
+                                                        - (Menunggu Mekanik)
                                                     @endif
                                                 </td>
-                                                <td>Rp {{ number_format($transaksi->total_purchased, 2, ',', '.') }}
+                                                <td>Rp
+                                                    {{ number_format($transaksi->total_selling + $transaksi->price_service, 2, ',', '.') }}
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="btn 
+                                                        @php
+if ($transaksi->status == "estimate"){
+                                                                echo "btn-success";
+                                                            } else {
+                                                                echo "btn-primary";
+                                                            } @endphp
+                                                    
+                                                     btn-xs">{{ $transaksi->status }}</span>
                                                 </td>
                                                 <td>
                                                     @if ($transaksi->status == 'unpaid')
-                                                        <a href="{{ route('kasir.bayar', ['id_transaksi' => $transaksi->id]) }}"
+                                                        
+                                                    @elseif($transaksi->status == 'progress')                                                        
+                                                        <a href="{{ route('approv.bayar', ['id_trx' => $transaksi->id]) }}"
+                                                            class="btn btn-warning btn-sm"><i
+                                                                class="fas fa-user-check"></i> Bayar</a>
+                                                    @elseif($transaksi->status == 'estimate')
+                                                        <a target="_blank" href=""
+                                                            class="btn btn-success btn-sm"><i class="fas fa-print"></i>
+                                                            Doc. Mekanik</a>
+                                                        <a href="{{ route('approv', ['id_trx' => $transaksi->id]) }}"
                                                             class="btn btn-primary btn-sm"><i
-                                                                class="fas fa-money-bill-alt"></i> Bayar</a>
+                                                                class="fas fa-user-check"></i> Approval</a>
                                                     @elseif($transaksi->status == 'paid')
-                                                        <a target="_blank" href="{{ route('kasir.cetak.nota', ['id_nota' => $transaksi->nota->id]) }}"
+                                                        <a target="_blank"
+                                                            href="{{ route('kasir.cetak.nota', ['id_nota' => $transaksi->nota->id]) }}"
                                                             class="btn btn-success btn-sm"><i class="fas fa-print"></i>
                                                             Cetak Ulang Nota</a>
                                                         <a href="" class="btn btn-primary btn-sm"><i

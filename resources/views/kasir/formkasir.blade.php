@@ -92,7 +92,7 @@
     </div>
 
     <div class="form-group">
-        <label for="estimasi_jasa_pasang">Jasa Service / Lain Lain</label>
+        <label for="estimasi_jasa_pasang">Estimasi Jasa</label>
         <input type="number" name="price_service"
             class="form-control {{ $errors->has('price_service') ? 'is-invalid' : '' }}" id="estimasi_jasa_pasang"
             placeholder="Jasa Service" aria-describedby="estimasi_jasa_pasang-error" aria-invalid="false"
@@ -113,6 +113,16 @@
         </select>
     </div>
 
+    <div class="form-group">
+        <label for="keterangan">Est. Pengerjaan</label>
+        <input type="text" name="estimasi_pengerjaan"
+            class="form-control {{ $errors->has('price_service') ? 'is-invalid' : '' }}" id="keterangan"
+            placeholder="Ex. 1 Hari, Selesai Hari Ini dll" aria-describedby="keterangan-error" aria-invalid="false"
+            value="">
+        <span id="keterangan-error" class="error invalid-feedback">
+            {{ $errors->has('price_service') ? '*) ' . $errors->first('price_service') : '' }}</span>
+    </div>
+
 
 
     <div class="row justify-content-end">
@@ -128,26 +138,15 @@
                         <th>Jasa Service</th>
                         <td><span class="jasasrv">Rp. 0</span></td>
                     </tr>
+                   
                     <tr>
-                        <th>Total:</th>
+                        <th>Est. Total:</th>
                         <td><span style="font-weight: bold;" class="totbyr">Rp
                                 {{ number_format($subtotal, 2, ',', '.') }}</span></td>
                     </tr>
-                    <tr>
-                        <th>Jumlah Uang</th>
-                        <td>
-                            <input type="number" name="jmlBayar"
-                                class="form-control {{ $errors->has('jmlBayar') ? 'is-invalid' : '' }}" id="jmlBayar"
-                                placeholder="Masukan Jumlah Uang" aria-describedby="jmlBayar-error" aria-invalid="false"
-                                value="{{ old('jmlBayar') ?? @$merk->jmlBayar }}">
-                            <span id="jmlBayar-error" class="error invalid-feedback">
-                                {{ $errors->has('jmlBayar') ? '*) ' . $errors->first('jmlBayar') : '' }}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Kembalian:</th>
-                        <td><span style="font-weight: bold;" class="kembali">Rp. 0</span></td>
-                    </tr>
+                   
+                    
+                 
                 </table>
             </div>
         </div>

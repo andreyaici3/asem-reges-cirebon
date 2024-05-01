@@ -13,6 +13,89 @@ use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
+
+
+    //create transaksi estimasi
+    public function create_estimasi(Request $request, $customer)
+    {
+        //untuk non barang / hanya hasa
+        $produks = session()->get('cart', []);
+        if ($produks == []) {
+            $data = [
+                "customer_id" => $customer == 0 ? null : $customer,
+                "chief_id" => Auth::user()->employe->chief_id,
+                "description" => $request->deskripsi,
+                "total_selling" => 0,
+                "total_price" => 0,
+                "price_service" => $request->price_service,
+                "total_purchased" => 0,
+                "total_item" => 0,
+                "role" => Auth::user()->role,
+                "mekanik_id" => null,
+                "estimasi_pengerjaan" => $request->estimasi_pengerjaan,
+                "kasir_id" => Auth::user()->id,
+                "status" => "estimate"
+            ];
+            Transaction::create($data);
+            return redirect()->to(route("dashboard"))->with("sukses", "Transaksi Berhasil Ditambahkan");
+        } else {
+            $totalHargaBeli = 0;
+            $totalHargaJual = 0;
+            $totalItem = 0;
+            //Tambahkan Transakksi
+            $transaksi = Transaction::create([
+                "customer_id" => $customer == 0 ? null : $customer,
+                'description' => $request->deskripsi,
+                'price_service' => $request->price_service,
+                "role" => Auth::user()->role,
+                "kasir_id" => Auth::user()->id,
+                'status' => "estimate",
+                "total_purchased" => 0,
+                "total_item" => 0,
+                "mekanik_id" => null,
+                "chief_id" => Auth::user()->employe->chief_id,
+                "estimasi_pengerjaan" => $request->estimasi_pengerjaan,
+            ]);
+            $produks = session()->get('cart', []);
+
+            foreach ($produks as $produk) {
+                TransactionDetail::create([
+                    "transaction_id" => $transaksi->id,
+                    "product_master_code" => $produk["code"],
+                    "price" => $produk["price"],
+                    "selling" => $produk["selling"],
+                    "qty" => $produk["qty"]
+                ]);
+                $totalHargaBeli += ($produk["price"] * $produk["qty"]);
+                $totalHargaJual += ($produk["selling"] * $produk["qty"]);
+                $totalItem += $produk["qty"];
+
+                $MP = MasterProduk::where('code', $produk['code']);
+                $stok_lama = $MP->first()->stok;
+                $stok_baru = $stok_lama - $produk["qty"];
+                MasterProduk::where('code', $produk['code'])->update([
+                    "stok" => $stok_baru,
+                ]);
+
+            }
+
+            foreach ($produks as $produk) {
+                unset($produks[$produk['code']]);
+                session()->put('cart', $produks);
+            }
+
+            Transaction::find($transaksi->id)->update([
+                "total_price" => $totalHargaBeli,
+                "total_selling" => $totalHargaJual,
+                "total_purchased" => $totalHargaJual + $request->price_service,
+                "status" => "estimate",
+                "total_item" => $totalItem,
+            ]);
+
+            return redirect()->to(route("dashboard"))->with("sukses", "Transaksi Berhasil Ditambahkan");
+        }
+    }
+
     public function transaksiByPelanggan($id_pelanggan)
     {
         @$chief = Auth::user()->employe->chief_id;
@@ -194,7 +277,7 @@ class TransaksiController extends Controller
                 "stok" => $stok_baru,
             ]);
 
-            if (!isset($request->kasir_mode)){
+            if (!isset($request->kasir_mode)) {
                 unset($produks[$produk['code']]);
                 session()->put('cart', $produks);
             }
@@ -224,7 +307,7 @@ class TransaksiController extends Controller
                 "change_money" => $request->jmlBayar - $trx->total_purchased,
             ]);
 
-            foreach ($produks as $produk){
+            foreach ($produks as $produk) {
                 unset($produks[$produk['code']]);
                 session()->put('cart', $produks);
             }

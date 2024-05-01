@@ -16,15 +16,16 @@ class CreateCustomerTransactionTable extends Migration
             $table->foreignIdFor(Customer::class, "customer_id")->nullable()->constrained('customer');
             $table->foreignIdFor(ChiefBranch::class, "chief_id")->constrained("chief_branch");
             $table->string("description")->nullable();
+            $table->string("estimasi_pengerjaan")->nullable();
             $table->double("total_price")->nullable();
             $table->double("total_selling")->nullable();
             $table->double("price_service")->nullable();
             $table->double("total_purchased");
             $table->integer("total_item");
-            $table->enum("role", ["mekanik", "kasir"])->default("mekanik");
+            $table->enum("role", ["mekanik", "kasir"])->default("kasir");
             $table->foreignIdFor(User::class, "mekanik_id")->nullable()->constrained("users");
             $table->foreignIdFor(User::class, "kasir_id")->nullable()->constrained("users");
-            $table->enum("status", ["waiting", "paid", "unpaid", "canceled"])->default("waiting");
+            $table->enum("status", ["estimate", "progress" ,"paid", "unpaid", "canceled"])->default("estimate");
             $table->timestamps();
         });
     }

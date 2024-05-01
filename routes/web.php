@@ -146,7 +146,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin|kasir|mekanik"])->gro
         Route::put("/transaksi/{id_pelanggan}/byPelanggan/minProduk/{code}", 'minproduk')->name("mekanik.transaksi.bypelanggan.min");
         Route::put("/transaksi/{id_pelanggan}/byPelanggan/plusProduk/{code}", 'plusProduk')->name("mekanik.transaksi.bypelanggan.plus");
         Route::delete("/transaksi/{id_pelanggan}/byPelanggan/trashProduk/{code}", 'trashProduk')->name("mekanik.transaksi.bypelanggan.trash");
-        Route::post("/transaksi/{id_pelanggan}/byPelanggan/store", 'storeProduk')->name("mekanik.transaksi.bypelanggan.store");
+        Route::post("/transaksi/{id_pelanggan}/byPelanggan/store", 'create_estimasi')->name("mekanik.transaksi.bypelanggan.store");
         Route::delete("/transaksi/{id_pelanggan}/byPelanggan/delete/{id_transaksi}", "destroyTransaksi")->name('mekanik.transaksi.bypelanggan.delete');
         Route::get("/transaksi/{id_pelanggan}/detail/{id_transaksi}", 'detail')->name('mekanik.transaksi.detail');
     });
@@ -159,6 +159,10 @@ Route::middleware(["auth", "user-role:superuser|superadmin|kasir|mekanik"])->gro
 Route::middleware(["auth", "user-role:superuser|superadmin|kasir"])->group(function () {
     Route::controller(KasirController::class)->group(function () {
         Route::get("/bayar", 'index')->name("kasir");
+        Route::get("/approve/{id_trx}", 'approval')->name("approv");
+        Route::put("/approve/{id_trx}", 'putApproval')->name("approv.put");
+        Route::get("/approve/bayar/{id_trx}", 'bayarApproval')->name("approv.bayar");
+        Route::post("/approve/bayar/{id_trx}", 'submitBayar')->name("approv.bayar.submit");
         Route::get("/bayar/{id_transaksi}", "bayar")->name("kasir.bayar");
         Route::put("/bayar/{id_transaksi}/create", "store_nota")->name("kasir.bayar.proses");
         Route::get("/kasir/riwayat", "riwayat")->name("kasir.riwayat");

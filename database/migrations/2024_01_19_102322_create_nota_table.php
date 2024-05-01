@@ -14,6 +14,7 @@ class CreateNotaTable extends Migration
             $table->foreign("transaction_id")->references('id')->on('customer_transaction')->onDelete("cascade")->onUpdate("cascade");
             $table->double('total_payment');
             $table->double('payment_amount');
+            $table->double('discount')->default(0);
             $table->double('change_money');
             $table->timestamps();
         });

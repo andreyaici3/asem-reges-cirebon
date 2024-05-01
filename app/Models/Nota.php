@@ -10,7 +10,7 @@ class Nota extends Model
     use HasFactory;
 
     protected $table = "nota";
-    protected $fillable = ["transaction_id", "total_payment", "payment_amount", "change_money"];
+    protected $fillable = ["transaction_id", "total_payment", "payment_amount", "change_money", "discount"];
 
     public function transaksi()
     {

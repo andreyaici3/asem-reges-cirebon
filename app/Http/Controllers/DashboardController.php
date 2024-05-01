@@ -14,7 +14,7 @@ class DashboardController extends Controller
         switch ($role){
             case "kasir":
                 $kasir = new KasirController();
-                return $kasir->index();
+                return $kasir->newTransaksi();
                 break;
             default:
                 return view('dashboard.index');

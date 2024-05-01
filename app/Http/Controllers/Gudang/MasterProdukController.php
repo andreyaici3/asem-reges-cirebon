@@ -163,6 +163,9 @@ class MasterProdukController extends Controller
         try {
             $produk = MasterProduk::find($id);
             AvailableProduct::where('product_master_code', $produk->code)->delete();
+            if (Storage::disk('public')->exists('images/' . $produk->gambar)) {
+                Storage::disk('public')->delete('images/' . $produk->gambar);
+            }
             $produk->delete();
             return redirect()->to(route('gudang.produk.master'))->with('sukses', "Data Master Produk Berhasil DiHapus");
         } catch (\Illuminate\Database\QueryException $e) {
