@@ -15,41 +15,41 @@ class KaryawanController extends Controller
     public function index($type)
     {
         @$chief_id = Auth::user()->branch->id;
-        if (@$chief_id == null){
+        if (@$chief_id == null) {
             $users = User::where("role", $type)->get();
         } else {
-            $users = User::where("role", $type)->whereHas('employe', function($q) use($chief_id){
+            $users = User::where("role", $type)->whereHas('employe', function ($q) use ($chief_id) {
                 $q->where('employe.chief_id', '=', $chief_id);
             })->get();
         }
-        
-        
 
-        if ($type == "gudang" || $type == "kasir" || $type == "mekanik"){
+
+
+        if ($type == "gudang" || $type == "kasir" || $type == "mekanik") {
             return view("admin.karyawan.index", [
                 "users" => $users,
                 "nomor" => 1,
                 "header" => strtoupper($type),
                 "routes_new" => route("admin.karyawan.create", ["type" => $type]),
             ]);
-        }else {
+        } else {
             abort(404);
         }
-       
     }
 
     public function create($type)
     {
-        if ($type == "gudang" || $type == "kasir" || $type == "mekanik"){
+        if ($type == "gudang" || $type == "kasir" || $type == "mekanik") {
             return view("admin.karyawan.create", [
                 "header" => strtoupper($type),
             ]);
-        }else {
+        } else {
             abort(404);
         }
     }
 
-    public function store(AdminRequest $request, $type){
+    public function store(AdminRequest $request, $type)
+    {
 
         $response = User::create([
             "name" => $request->name,
@@ -67,13 +67,37 @@ class KaryawanController extends Controller
 
         return redirect()->to(route("admin.karyawan", ['type' => $type]))->with("sukses", "$type Baru Berhasil Ditambahkan");
     }
-    
-    public function destroy($type, $id){
+
+    public function edit($type, $id)
+    {
+        $user = User::findOrFail($id);
+
+        return view("admin.karyawan.edit", [
+            "user" => $user,
+            "header" => strtoupper($type),
+        ]);
+    }
+
+    public function destroy($type, $id)
+    {
         try {
             User::find($id)->delete();
             return redirect()->to(route('admin.karyawan', ['type' => $type]))->with('sukses', "Data $type Berhasil Dihapus");
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to(route('admin.karyawan', ['type' => $type]))->with('gagal', "Data $type Gagal Dihapus");
+        }
+    }
+
+    public function update(AdminRequest $request, $type, $id)
+    {
+        try {
+            User::find($id)->update([
+                "name" => $request->name,
+                "email" => $request->email,
+            ]);
+            return redirect()->to(route('admin.karyawan', ['type' => $type]))->with('sukses', "Data $type Berhasil Diubah");
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->to(route('admin.karyawan', ['type' => $type]))->with('gagal', "Data $type Gagal Diubah");
         }
     }
 }

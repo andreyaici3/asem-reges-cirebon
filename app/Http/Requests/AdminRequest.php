@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class AdminRequest extends FormRequest
 {
@@ -17,9 +19,14 @@ class AdminRequest extends FormRequest
 
     public function rules()
     {
+        $id = explode("/", Request::getRequestUri());
+        $id = end($id);
         return [
             "name" => "required|min:5",
-            "email" => "required|email|unique:users",
+            "email" => [
+                "required",
+                Rule::unique('users')->ignore($id),
+            ],
         ];
     }
 

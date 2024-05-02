@@ -71,7 +71,8 @@ Route::middleware(["auth", "user-role:superuser|superadmin|admin"])->group(funct
         Route::get("/karyawan/{type}", 'index')->name("admin.karyawan");
         Route::get("/karyawan/create/{type}", 'create')->name("admin.karyawan.create");
         Route::post("/karyawan/{type}", 'store');
-        Route::get("/karyawan/{type}/edit", 'edit')->name("admin.karyawan.edit");
+        Route::get("/karyawan/{type}/edit/{id}", 'edit')->name("admin.karyawan.edit");
+        Route::put("/karyawan/{type}/edit/{id}", 'update');
         Route::delete("/kepala/{type}/{id}", "destroy")->name("admin.karyawan.delete");
     });
 
