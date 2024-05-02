@@ -147,7 +147,7 @@ class KasirController extends Controller
                 "total_payment" => $price,
                 "payment_amount" => $request->uang,
                 "change_money" => ($request->uang - $price),
-                "discount" => $request->discount,
+                "discount" => $request->discount ?? 0,
             ]);
             return redirect()->to(route("kasir"))->with("sukses", "Transaksi Berhasil Di Bayar");
         }
