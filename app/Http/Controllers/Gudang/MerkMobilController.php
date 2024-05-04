@@ -27,7 +27,7 @@ class MerkMobilController extends Controller
             'name' => 'required',
         ]);
 
-        @$chief_id = Auth::user()->employe->chief_id;
+        @$chief_id = Auth::user()->branch->id;
         try {
             CarMerk::create([
                 "chief_id" => $chief_id,

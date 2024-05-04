@@ -91,6 +91,24 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item {{ $menuOpen == 'car' ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ $menuOpen == 'car' ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-car"></i>
+                            <p>
+                                Master Data
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('gudang.mobil.merk') }}" class="nav-link {{ $menuActive == 'merk-mobil' ? 'active' : '' }}">
+                                    <i class="fas fa-car nav-icon"></i>
+                                    <p>Merk Mobil</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li class="nav-item {{ $menuOpen == 'produk' ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ $menuOpen == 'produk' ? 'active' : '' }}">
                             <i class="nav-icon fas fa-shopping-cart"></i>
@@ -127,23 +145,6 @@
                                 Master Vendor
                             </p>
                         </a>
-                    </li>
-                    <li class="nav-item {{ $menuOpen == 'car' ? 'menu-open' : '' }}">
-                        <a href="#" class="nav-link {{ $menuOpen == 'car' ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-car"></i>
-                            <p>
-                                Master Car
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('gudang.mobil.merk') }}" class="nav-link {{ $menuActive == 'merk-mobil' ? 'active' : '' }}">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Merk Mobil</p>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
 
                     @endif

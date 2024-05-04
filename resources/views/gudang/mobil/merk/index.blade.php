@@ -28,17 +28,24 @@
                                     </div>
                                 @endif
 
-                                @if (Session::has('gagal'))
+                                @if (Session::has('gagal') || $errors->has('name'))
                                     <div class="alert alert-danger alert-dismissible">
                                         <button type="button" class="close" data-dismiss="alert"
                                             aria-hidden="true">×</button>
                                         <h5><i class="icon fas fa-ban"></i> Oopss!</h5>
-                                        {{ session('gagal') }}
+                                        {{ session('gagal') }} | {{ $errors->first('name') }}
                                     </div>
                                 @endif
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mt-1">
+                            <div class="col-3">
+                                <button type="button" onclick="resetform()" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Merk
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
                             <div class="col-12">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
@@ -55,14 +62,16 @@
                                                 <td>{{ $nomor++ }}</td>
                                                 <td>{{ $merk->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('gudang.mobil.type', ['id_merk' => $merk->id]) }}" class="btn btn-success btn-xs">{{ $merk->tipe->count() }} Tipe Mobil</a>
+                                                    <a href="{{ route('gudang.mobil.type', ['id_merk' => $merk->id]) }}"
+                                                        class="btn btn-success btn-xs">{{ $merk->tipe->count() }} Tipe
+                                                        Mobil</a>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('gudang.mobil.merk.edit', ['id' => $merk->id]) }}"
+                                                    <button value="{{ $merk->name }}" type="button" onclick="edit(this.id, this.value)" id="{{ $merk->id }}"
                                                         class="btn btn-xs btn-primary">
                                                         <i class="fas fa-edit"></i>
                                                         Edit
-                                                    </a>|
+                                                    </button>|
                                                     <form
                                                         action="{{ route('gudang.mobil.merk.delete', ['id' => $merk->id]) }}"
                                                         style="display: inline-block;" method="POST">
@@ -83,15 +92,44 @@
                                 </table>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-1">
-            <div class="col-3">
-                <a href="{{ route('gudang.mobil.merk.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
-                    MERK
-                    BARU</a>
+
+    </div>
+
+    <div class="modal fade" id="modal-sm">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Merk Mobil</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" id="myForm" action="{{ route('gudang.mobil.merk') }}">
+                    @csrf
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="merk_mobil">Merk Mobil</label>
+                            <input type="text" name="name"
+                                class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="merk_mobil"
+                                placeholder="Masukan Merk Mobil" aria-describedby="merk_mobil-error"
+                                aria-invalid="false" value="">
+                            <span id="merk_mobil-error" class="error invalid-feedback">
+                                {{ $errors->has('name') ? '*) ' . $errors->first('name') : '' }}</span>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -117,10 +155,27 @@
                     "responsive": true,
                     "lengthChange": false,
                     "autoWidth": false,
-                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                    "buttons": []
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
             });
+
+            function resetform(){
+                $("input[name=_method]").remove();
+                var url = '{{ route('gudang.mobil.merk') }}';
+                $("#myForm").attr("action", url);
+                $("input[name=name]").val("");
+                $("#modal-sm").modal("show");
+            }
+
+            function edit(id, name){
+                $("#modal-sm").modal("show");
+                var url = '{{ route("gudang.mobil.merk.update", ["id" => ":id"]) }}';
+                url = url.replace(":id", id);
+                $(".modal-body").append('{{ method_field("PUT") }}')
+                $("#myForm").attr("action", url);
+                $("input[name=name]").val(name);
+            }
         </script>
     @endsection
 
