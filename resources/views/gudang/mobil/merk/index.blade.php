@@ -52,7 +52,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Merk Mobil</th>
-                                            <th>Jumlah Tipe</th>
+                                            <th>Jumlah Jenis</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -63,7 +63,7 @@
                                                 <td>{{ $merk->name }}</td>
                                                 <td>
                                                     <a href="{{ route('gudang.mobil.type', ['id_merk' => $merk->id]) }}"
-                                                        class="btn btn-success btn-xs">{{ $merk->tipe->count() }} Tipe
+                                                        class="btn btn-success btn-xs">{{ $merk->tipe->count() }} Jenis
                                                         Mobil</a>
                                                 </td>
                                                 <td>

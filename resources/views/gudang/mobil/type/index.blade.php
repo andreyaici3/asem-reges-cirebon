@@ -1,7 +1,7 @@
 <x-app-layout menuActive="merk-mobil" menuOpen="car">
     @section('breadcrumb')
         <div class="col-sm-6">
-            <h1 class="m-0">TIPE MOBIL - {{ strtoupper($merk->name) }}</h1>
+            <h1 class="m-0">JENIS MOBIL - {{ strtoupper($merk->name) }}</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -90,7 +90,7 @@
         <div class="row mt-1">
             <div class="col-3">
                 <a href="{{ route('gudang.mobil.type.create', ['id_merk' => $merk->id]) }}" class="btn btn-primary"><i
-                        class="fas fa-plus"></i> TIPE BARU</a>
+                        class="fas fa-plus"></i> JENIS BARU</a>
             </div>
         </div>
         <div class="modal fade" id="modal-default">
