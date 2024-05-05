@@ -58,11 +58,19 @@ Route::middleware(["auth", "user-role:superuser|superadmin"])->group(function ()
 });
 
 Route::middleware(["auth", "user-role:superuser|superadmin|admin"])->group(function () {
+
+    Route::controller(TypeMobilController::class)->group(function () {
+        Route::get("/mobil/{id_merk}/type", "index")->name("gudang.mobil.type");
+        Route::get("/mobil/{id_merk}/type/create", "create")->name("gudang.mobil.type.create");
+        Route::post("/mobil/{id_merk}/type", "store");
+        // Route::get("/mobil/type/{id_type}/edit/{id_merk}", "edit")->name("gudang.mobil.type.edit");
+        Route::put("/mobil/type/{id_type}/{id_merk}", "update")->name("gudang.mobil.type.update");
+        Route::delete("/mobil/type/{id_type}/{id_merk}", 'destroy')->name("gudang.mobil.type.delete");
+    });
+
     Route::controller(MerkMobilController::class)->group(function () {
         Route::get("/mobil/merk", "index")->name("gudang.mobil.merk");
-        Route::post("/mobil/merk", "store");
-        // Route::get("/mobil/merk/create", "create")->name("gudang.mobil.merk.create");
-        
+        Route::post("/mobil/merk", "store");        
         Route::get("/mobil/merk/{id}/edit", "edit")->name("gudang.mobil.merk.edit");
         Route::put("/mobil/merk/{id}", "update")->name("gudang.mobil.merk.update");
         Route::delete("/mobil/merk/{id}", 'destroy')->name("gudang.mobil.merk.delete");
@@ -113,14 +121,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin|gudang"])->group(func
 
 
 
-    Route::controller(TypeMobilController::class)->group(function () {
-        Route::get("/mobil/{id_merk}/type", "index")->name("gudang.mobil.type");
-        Route::get("/mobil/{id_merk}/type/create", "create")->name("gudang.mobil.type.create");
-        Route::post("/mobil/{id_merk}/type", "store");
-        Route::get("/mobil/type/{id_type}/edit/{id_merk}", "edit")->name("gudang.mobil.type.edit");
-        Route::put("/mobil/type/{id_type}/{id_merk}", "update")->name("gudang.mobil.type.update");
-        Route::delete("/mobil/type/{id_type}/{id_merk}", 'destroy')->name("gudang.mobil.type.delete");
-    });
+   
 });
 
 Route::middleware(["auth", "user-role:superuser|superadmin|mekanik"])->group(function () {

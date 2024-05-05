@@ -67,18 +67,20 @@
                                                         Mobil</a>
                                                 </td>
                                                 <td>
-                                                    <button value="{{ $merk->name }}" type="button" onclick="edit(this.id, this.value)" id="{{ $merk->id }}"
+                                                    <button value="{{ $merk->name }}" type="button"
+                                                        onclick="edit(this.id, this.value)" id="{{ $merk->id }}"
                                                         class="btn btn-xs btn-primary">
                                                         <i class="fas fa-edit"></i>
                                                         Edit
                                                     </button>|
                                                     <form
+                                                    id="delete{{ $merk->id }}"
                                                         action="{{ route('gudang.mobil.merk.delete', ['id' => $merk->id]) }}"
                                                         style="display: inline-block;" method="POST">
                                                         @csrf
                                                         @method('delete')
-                                                        <button type="submit"
-                                                            onclick="return confirm('Yakin Ingin Hapus Data?')"
+                                                        <button type="button"
+                                                            onclick="confirmHapus(('{{ $merk->id }}'))"
                                                             class="btn btn-xs btn-danger">
                                                             <i class="fas fa-trash"></i>
                                                             Hapus
@@ -160,7 +162,7 @@
 
             });
 
-            function resetform(){
+            function resetform() {
                 $("input[name=_method]").remove();
                 var url = '{{ route('gudang.mobil.merk') }}';
                 $("#myForm").attr("action", url);
@@ -168,13 +170,30 @@
                 $("#modal-sm").modal("show");
             }
 
-            function edit(id, name){
+            function edit(id, name) {
                 $("#modal-sm").modal("show");
-                var url = '{{ route("gudang.mobil.merk.update", ["id" => ":id"]) }}';
+                var url = '{{ route('gudang.mobil.merk.update', ['id' => ':id']) }}';
                 url = url.replace(":id", id);
-                $(".modal-body").append('{{ method_field("PUT") }}')
+                $(".modal-body").append('{{ method_field('PUT') }}')
                 $("#myForm").attr("action", url);
                 $("input[name=name]").val(name);
+            }
+
+            function confirmHapus(id) {
+                Swal.fire({
+                    title: "Apakah Kamu Yakin ?",
+                    text: "Data akan dihapus dan tidak akan dapat dikembalikan",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#delete" + id).submit();
+                    }
+                });
             }
         </script>
     @endsection

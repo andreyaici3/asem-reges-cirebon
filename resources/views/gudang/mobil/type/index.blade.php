@@ -12,7 +12,7 @@
     @endsection
 
     <div class="container-fluid">
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
@@ -44,7 +44,9 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>Jenis Mobil</th>
                                             <th>Tipe Mobil</th>
+                                            <th>Tahun</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -52,20 +54,22 @@
                                         @foreach ($types as $type)
                                             <tr>
                                                 <td>{{ $nomor++ }}</td>
-                                                <td>{{ $type->name }}</td>
+                                                <td>{{ $type->jenis }}</td>
+                                                <td>{{ $type->tipe }}</td>
+                                                <td>{{ $type->tahun }}</td>
                                                 <td>
-                                                    <a href="{{ route('gudang.mobil.type.edit', ['id_type' => $type->id, "id_merk" => $merk->id]) }}"
+                                                    <button type="button" onclick="edit(this)" data-jenis="{{ $type->jenis }}" data-tipe="{{ $type->tipe }}" data-tahun="{{ $type->tahun }}" data-id="{{ $type->id }}"
                                                         class="btn btn-xs btn-primary">
                                                         <i class="fas fa-edit"></i>
                                                         Edit
-                                                    </a>|
-                                                    <form
-                                                        action="{{ route('gudang.mobil.type.delete', ['id_type' => $type->id, "id_merk" => $merk->id]) }}"
+                                                    </button>|
+                                                    <form id="delete{{ $type->id }}"
+                                                        action="{{ route('gudang.mobil.type.delete', ['id_type' => $type->id, 'id_merk' => $merk->id]) }}"
                                                         style="display: inline-block;" method="POST">
                                                         @csrf
                                                         @method('delete')
-                                                        <button type="submit"
-                                                            onclick="return confirm('Yakin Ingin Hapus Data?')"
+                                                        <button type="button"
+                                                            onclick="confirmHapus('{{ $type->id }}')"
                                                             class="btn btn-xs btn-danger">
                                                             <i class="fas fa-trash"></i>
                                                             Hapus
@@ -85,9 +89,58 @@
         </div>
         <div class="row mt-1">
             <div class="col-3">
-                <a href="{{ route('gudang.mobil.type.create', ['id_merk' => $merk->id]) }}" class="btn btn-primary"><i class="fas fa-plus"></i>
-                    TIPE
-                    BARU</a>
+                <a href="{{ route('gudang.mobil.type.create', ['id_merk' => $merk->id]) }}" class="btn btn-primary"><i
+                        class="fas fa-plus"></i> TIPE BARU</a>
+            </div>
+        </div>
+        <div class="modal fade" id="modal-default">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Jenis Mobil</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" id="myForm" action="{{ route('gudang.mobil.merk') }}">
+                        @csrf
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <label for="merk_mobil">Jenis Mobil</label>
+                                <input type="text" name="jenis"
+                                    class="form-control {{ $errors->has('jenis') ? 'is-invalid' : '' }}" id="merk_mobil"
+                                    aria-describedby="merk_mobil-error"
+                                    aria-invalid="false" required>
+                                <span id="merk_mobil-error" class="error invalid-feedback">
+                                    {{ $errors->has('jenis') ? '*) ' . $errors->first('jenis') : '' }}</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="merk_mobil">Tipe Mobil</label>
+                                <input type="text" name="tipe"
+                                    class="form-control {{ $errors->has('tipe') ? 'is-invalid' : '' }}" id="merk_mobil"
+                                     aria-describedby="merk_mobil-error"
+                                    aria-invalid="false">
+                                <span id="merk_mobil-error" class="error invalid-feedback">
+                                    {{ $errors->has('tipe') ? '*) ' . $errors->first('tipe') : '' }}</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="merk_mobil">Tahun</label>
+                                <input type="text" name="tahun"
+                                    class="form-control {{ $errors->has('tahun') ? 'is-invalid' : '' }}" id="merk_mobil"
+                                    aria-describedby="merk_mobil-error"
+                                    aria-invalid="false">
+                                <span id="merk_mobil-error" class="error invalid-feedback">
+                                    {{ $errors->has('tahun') ? '*) ' . $errors->first('tahun') : '' }}</span>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -117,6 +170,38 @@
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
             });
+
+            function confirmHapus(id) {
+                Swal.fire({
+                    title: "Apakah Kamu Yakin ?",
+                    text: "Data akan dihapus dan tidak akan dapat dikembalikan",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Delete",
+                    cancelButtonText: "Tidak"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#delete" + id).submit();
+                    }
+                });
+            }
+
+            function edit($this) {
+                $("#modal-default").modal("show");
+                var data = $this.dataset;
+                $("input[name=jenis]").val(data.jenis);
+                $("input[name=tipe]").val(data.tipe);
+                $("input[name=tahun]").val(data.tahun);
+                var url = '<?= route('gudang.mobil.type.update', ['id_merk' => ':id_merk', 'id_type' => ':id_type']) ?>';
+                var id_merk = "<?= $merk->id ?>";
+                var id_type = data.id;
+                url = url.replace(":id_type", id_type);
+                url = url.replace(":id_merk", id_merk);
+                $(".modal-body").append('{{ method_field('PUT') }}')
+                $("#myForm").attr("action", url);
+            }   
         </script>
     @endsection
 

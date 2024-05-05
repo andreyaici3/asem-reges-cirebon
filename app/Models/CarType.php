@@ -11,7 +11,7 @@ class CarType extends Model
 
     protected $table = "car_type";
 
-    protected $fillable = ["merk_id","name"];
+    protected $fillable = ["merk_id","jenis", "tipe", "tahun"];
 
     public function merk(){
         return $this->belongsTo(CarMerk::class, "merk_id");

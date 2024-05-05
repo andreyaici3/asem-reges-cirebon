@@ -76,15 +76,27 @@ class BranchSeeders extends Seeder
         //tambah mobil
         collect([
             [
-                "name" => "Toyota",
+                "name" => "DAIHATSU",
                 "chief_id" => 1,
             ],
             [
-                "name" => "Daihatsu",
+                "name" => "TOYOTA",
                 "chief_id" => 1,
             ],
             [
-                "name" => "Honda",
+                "name" => "SUZUJI",
+                "chief_id" => 1,
+            ],
+            [
+                "name" => "AUDI",
+                "chief_id" => 1,
+            ],
+            [
+                "name" => "BMW",
+                "chief_id" => 1,
+            ],
+            [
+                "name" => "DATSUN",
                 "chief_id" => 1,
             ],
         ])->each(function($merkMobil){
@@ -94,188 +106,163 @@ class BranchSeeders extends Seeder
         collect([
             [
                 "merk_id" => 1,
-                "name" => "Rush"
+                "jenis" => "Charade",
+                "tipe" => "CX",
+                "tahun" => "2020"
             ],
             [
                 "merk_id" => 1,
-                "name" => "Yaris"
+                "jenis" => "Hi-Jet",
+                "tipe" => "1000",
+                "tahun" => "2020"
             ],
-            [
-                "merk_id" => 2,
-                "name" => "Terios"
-            ],
-            [
-                "merk_id" => 2,
-                "name" => "Ayla"
-            ],
-            [
-                "merk_id" => 2,
-                "name" => "Grandmax"
-            ],
-            [
-                "merk_id" => 3,
-                "name" => "Jazz",
-            ],
-            [
-                "merk_id" => 3,
-                "name" => "Brio",
-            ],
-            [
-                "merk_id" => 3,
-                "name" => "Civic",
-            ],
-            [
-                "merk_id" => 3,
-                "name" => "CRV",
-            ],
-
         ])->each(function($typeMobil){
             CarType::create($typeMobil);
         });
 
         //tambah merk produk
-        collect([
-            [
-                "chief_id" => 1,
-                "name" => "Bridgestone"
-            ],
-            [
-                "chief_id" => 1,
-                "name" => "Kayaba Ultra"
-            ],
-        ])->each(function($produkMerk){
-            ProductMerk::create($produkMerk);
-        });
+        // collect([
+        //     [
+        //         "chief_id" => 1,
+        //         "name" => "Bridgestone"
+        //     ],
+        //     [
+        //         "chief_id" => 1,
+        //         "name" => "Kayaba Ultra"
+        //     ],
+        // ])->each(function($produkMerk){
+        //     ProductMerk::create($produkMerk);
+        // });
 
         //tambah type produk
-        collect([
-            [
-                "product_merk_id" => 1,
-                "name" => "POTENZA"
-            ],
-            [
-                "product_merk_id" => 1,
-                "name" => "TURANZA"
-            ],
-            [
-                "product_merk_id" => 2,
-                "name" => "EXCEL-G"
-            ],
-            [
-                "product_merk_id" => 2,
-                "name" => "ULTRA SR"
-            ],
-        ])->each(function($typeProduk){
-            ProductType::create($typeProduk);
-        });
+        // collect([
+        //     [
+        //         "product_merk_id" => 1,
+        //         "name" => "POTENZA"
+        //     ],
+        //     [
+        //         "product_merk_id" => 1,
+        //         "name" => "TURANZA"
+        //     ],
+        //     [
+        //         "product_merk_id" => 2,
+        //         "name" => "EXCEL-G"
+        //     ],
+        //     [
+        //         "product_merk_id" => 2,
+        //         "name" => "ULTRA SR"
+        //     ],
+        // ])->each(function($typeProduk){
+        //     ProductType::create($typeProduk);
+        // });
 
         //tambahkan master product
-        collect([
-            [
-                "chief_id" => 1,
-                "product_type_id" => 2,
-                "vendor_id" => 1,
-                "code" => "1307109000717",
-                "name" => "TURANZA T005A",
-                "price" => "10000",
-                "selling" => "20000",
-                "stok" => "10"
-            ],
-            [
-                "chief_id" => 1,
-                "product_type_id" => 2,
-                "vendor_id" => "1", 
-                "code" => "4423923515928",
-                "name" => "POTENZA RE003",
-                "price" => "15000",
-                "selling" => "25000",
-                "stok" => 8
-            ],
-        ])->each(function($masterProduk){
-            MasterProduk::create($masterProduk);
-        });
+        // collect([
+        //     [
+        //         "chief_id" => 1,
+        //         "product_type_id" => 2,
+        //         "vendor_id" => 1,
+        //         "code" => "1307109000717",
+        //         "name" => "TURANZA T005A",
+        //         "price" => "10000",
+        //         "selling" => "20000",
+        //         "stok" => "10"
+        //     ],
+        //     [
+        //         "chief_id" => 1,
+        //         "product_type_id" => 2,
+        //         "vendor_id" => "1", 
+        //         "code" => "4423923515928",
+        //         "name" => "POTENZA RE003",
+        //         "price" => "15000",
+        //         "selling" => "25000",
+        //         "stok" => 8
+        //     ],
+        // ])->each(function($masterProduk){
+        //     MasterProduk::create($masterProduk);
+        // });
 
         //tambahkan available product
-        collect([
-            [
-                "product_master_code" => "1307109000717",
-                "car_type_id" => 1
-            ],
-            [
-                "product_master_code" => "1307109000717",
-                "car_type_id" => 3,
-            ],
-            [
-                "product_master_code" => "4423923515928",
-                "car_type_id" => 6
-            ],
-            [
-                "product_master_code" => "4423923515928",
-                "car_type_id" => 7,
-            ],
-            [
-                "product_master_code" => "4423923515928",
-                "car_type_id" => 8,
-            ],
-        ])->each(function($available){
-            AvailableProduct::create($available);
-        });
+        // collect([
+        //     [
+        //         "product_master_code" => "1307109000717",
+        //         "car_type_id" => 1
+        //     ],
+        //     [
+        //         "product_master_code" => "1307109000717",
+        //         "car_type_id" => 3,
+        //     ],
+        //     [
+        //         "product_master_code" => "4423923515928",
+        //         "car_type_id" => 6
+        //     ],
+        //     [
+        //         "product_master_code" => "4423923515928",
+        //         "car_type_id" => 7,
+        //     ],
+        //     [
+        //         "product_master_code" => "4423923515928",
+        //         "car_type_id" => 8,
+        //     ],
+        // ])->each(function($available){
+        //     AvailableProduct::create($available);
+        // });
 
         //tambahkan customer
-        collect([
-            [
-                "chief_id" => 1,
-                "car_type_id" => 1,
-                "name" => "Andrey Andriansyah",
-                "number_plat" => "E 1838 YP"
-            ]
-        ])->each(function($customer){
-            Customer::create($customer);
-        });
+        // collect([
+        //     [
+        //         "chief_id" => 1,
+        //         "car_type_id" => 1,
+        //         "name" => "Andrey Andriansyah",
+        //         "number_plat" => "E 1838 YP"
+        //     ]
+        // ])->each(function($customer){
+        //     Customer::create($customer);
+        // });
 
         //tambahkan transaksi
-        collect([
-            [
-                "customer_id" => 1,
-                "chief_id" => 1,
-                "description" => "Ban Sering Bocor, Harus Ganti",
-                "total_price" => "40000",
-                "total_selling" => "80000",
-                "price_service" => "20000",
-                "total_purchased" => "100000",
-                "total_item" => 4,
-                "role" => "kasir",
-                "mekanik_id" => 6,
-                "kasir_id" => 5,
-                "status" => "paid"
-            ]
-        ])->each(function($transaksi){
-            Transaction::create($transaksi);
-        });
+        // collect([
+        //     [
+        //         "customer_id" => 1,
+        //         "chief_id" => 1,
+        //         "description" => "Ban Sering Bocor, Harus Ganti",
+        //         "total_price" => "40000",
+        //         "total_selling" => "80000",
+        //         "price_service" => "20000",
+        //         "total_purchased" => "100000",
+        //         "total_item" => 4,
+        //         "role" => "kasir",
+        //         "mekanik_id" => 6,
+        //         "kasir_id" => 5,
+        //         "status" => "paid"
+        //     ]
+        // ])->each(function($transaksi){
+        //     Transaction::create($transaksi);
+        // });
 
         //tambahkan transaksi detail
-        collect([
-            [
-                "transaction_id" => 1,
-                "product_master_code" => "1307109000717",
-                "price" => "10000",
-                "selling" => "20000",
-                "qty" => 4
-            ]
-        ])->each(function($transaksiDetail){
-            TransactionDetail::create($transaksiDetail);
-        });
+        // collect([
+        //     [
+        //         "transaction_id" => 1,
+        //         "product_master_code" => "1307109000717",
+        //         "price" => "10000",
+        //         "selling" => "20000",
+        //         "qty" => 4
+        //     ]
+        // ])->each(function($transaksiDetail){
+        //     TransactionDetail::create($transaksiDetail);
+        // });
 
         //masukan ke nota
-        collect([
-            [
-                "transaction_id" => 1,
-                "total_payment" => "100000",
-                "payment_amount" => "100000",
-                "change_money" => "0",
-            ]
-        ])->each(function($nota){
-            Nota::create($nota);
-        });
+        // collect([
+        //     [
+        //         "transaction_id" => 1,
+        //         "total_payment" => "100000",
+        //         "payment_amount" => "100000",
+        //         "change_money" => "0",
+        //     ]
+        // ])->each(function($nota){
+        //     Nota::create($nota);
+        // });
     }
 }

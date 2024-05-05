@@ -27,15 +27,20 @@ class TypeMobilController extends Controller
 
     public function store(Request $request, $id_merk)
     {
-        $request->validate([
-            'name' => 'required',
-        ]);
+        $ress =  count($request->jenis ?? []);
+        if ($ress == 0)
+            return redirect()->to(route('gudang.mobil.type', ["id_merk" => $id_merk]))->with('gagal', "Tidak Ada Data Yang Dimasukan");
 
         try {
-            CarType::create([
-                "name"     => $request->name,
-                "merk_id" => $id_merk
-            ]);
+            for ($i = 0; $i < count($request->jenis); $i++) {
+                CarType::create([
+                    "merk_id" => $id_merk,
+                    "jenis" => $request->jenis[$i],
+                    "tipe" => $request->tipe[$i],
+                    "tahun" => $request->tahun[$i],
+                ]);
+            }
+
             return redirect()->to(route('gudang.mobil.type', ["id_merk" => $id_merk]))->with('sukses', "Data type Mobil Berhasil Ditambahkan");
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to(route('gudang.mobil.type', ["id_merk" => $id_merk]))->with('gagal', "Data type Mobil Gagal Ditambahkan");
@@ -52,13 +57,11 @@ class TypeMobilController extends Controller
 
     public function update(Request $request, $id_type, $id_merk)
     {
-        $request->validate([
-            'name' => 'required',
-        ]);
-
         try {
             CarType::find($id_type)->update([
-                "name"     => $request->name,
+                "jenis" => $request->jenis,
+                "tipe" => $request->tipe ?? null,
+                "tahun" => $request->tahun ?? null,
             ]);
             return redirect()->to(route('gudang.mobil.type', ["id_merk" => $id_merk]))->with('sukses', "Data Type Mobil Berhasil Diubah");
         } catch (\Illuminate\Database\QueryException $e) {

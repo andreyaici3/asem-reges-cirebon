@@ -12,7 +12,9 @@ class CreateCarTypeTable extends Migration
         Schema::create('car_type', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(CarMerk::class, "merk_id")->constrained("car_merk");
-            $table->string("name");
+            $table->string("jenis");
+            $table->string("tipe")->nullable()->default(null);
+            $table->string("tahun")->nullable()->default(null);
             $table->timestamps();
         });
     }

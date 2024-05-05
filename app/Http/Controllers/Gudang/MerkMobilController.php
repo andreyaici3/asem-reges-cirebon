@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Gudang;
 
 use App\Http\Controllers\Controller;
 use App\Models\CarMerk;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,7 +50,9 @@ class MerkMobilController extends Controller
 
     public function update(Request $request, $id){
         $request->validate([
-            'name' => 'required',
+            'name' => [
+                'required',
+            ],
         ]);
 
         try {
