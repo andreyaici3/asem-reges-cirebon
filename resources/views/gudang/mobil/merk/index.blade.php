@@ -172,9 +172,9 @@
 
             function edit(id, name) {
                 $("#modal-sm").modal("show");
-                var url = '{{ route('gudang.mobil.merk.update', ['id' => ':id']) }}';
+                var url = '<?= route('gudang.mobil.merk.update', ['id' => ':id']) ?>';
                 url = url.replace(":id", id);
-                $(".modal-body").append('{{ method_field('PUT') }}')
+                $(".modal-body").append('<?= method_field('PUT') ?>')
                 $("#myForm").attr("action", url);
                 $("input[name=name]").val(name);
             }
