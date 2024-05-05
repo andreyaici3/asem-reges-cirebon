@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CarMerk;
 use App\Models\Service;
+use App\Models\SubService;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -12,6 +14,7 @@ class ServiceController extends Controller
     {
         return view("admin.layanan.index", [
             "services" => Service::orderBy("id", "desc")->take(100)->get(),
+            "merk" => CarMerk::get(),
         ]);
     }
 
@@ -26,7 +29,7 @@ class ServiceController extends Controller
             return redirect()->to(route("layanan"))->with('gagal', "Data Layanan Gagal Ditambahkan");
         }
     }
-    
+
     public function destroy($id)
     {
         try {
@@ -47,5 +50,46 @@ class ServiceController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to(route("layanan"))->with('gagal', "Data Layanan Gagal DiUbah");
         }
+    }
+
+    public function createSub(Request $request, $id_layanan)
+    {
+        $jenis = CarMerk::findOrFail($request->merk);
+        return view("admin.layanan.sub-layanan", [
+            "jenis" => $jenis,
+            "jenis_mobil" => $jenis->tipe,
+            "layanan" => Service::findOrFail($id_layanan),
+        ]);
+    }
+
+    public function storeSub(Request $request, $id_layanan)
+    {
+        $ress =  count($request->jenis ?? []);
+        if ($ress == 0)
+            return redirect()->to("")->with('gagal', "Tidak Ada Data Yang Dimasukan");
+
+        try {
+            for ($i = 0; $i < count($request->jenis); $i++) {
+                SubService::create(
+                    [
+                        "service_id" => $id_layanan,
+                        "id_type" => $request->jenis[$i],
+                        "harga_jasa" => $request->jasa[$i],
+                        "harga_jasa_khusus" => $request->jk[$i]
+                    ]
+                );
+            }
+            return redirect()->to(route("layanan"))->with('sukses', "Data Layanan Berhasil Ditambahkan");
+        } catch (\Illuminate\Database\QueryException $e) {
+            return redirect()->to(route("layanan"))->with('gagal', "Data Layanan Gagal Ditambahkan");
+        }
+    }
+
+    public function detailSub($id_layanan)
+    {
+        $subLayanan = Service::findOrFail($id_layanan);
+        return view("admin.layanan.detail-sub-layanan", [
+            "subs" => $subLayanan
+        ]);
     }
 }

@@ -65,6 +65,9 @@ Route::middleware(["auth", "user-role:superuser|superadmin|admin"])->group(funct
         Route::delete("/layanan/{id}", "destroy")->name("layanan.crud");
         Route::put("/layanan/{id}", "update");
         Route::post("/layanan", "store");
+        Route::post("/layanan/sub/{id_layanan}", "createSub")->name("sublayanan");
+        Route::get("/layanan/sub/{id_layanan}", "detailSub");
+        Route::post("/layanan/sub/{id_layanan}/create", "storeSub")->name("sublayanan.store");
         
     });
 

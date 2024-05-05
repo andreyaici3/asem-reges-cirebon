@@ -12,4 +12,9 @@ class Service extends Model
     protected $table = "service";
 
     protected $fillable = ["service_name"];
+
+    public function sublayanan()
+    {
+        return $this->hasMany(SubService::class, "service_id");
+    }
 }

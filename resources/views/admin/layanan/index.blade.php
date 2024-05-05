@@ -65,14 +65,19 @@
                                                 <td>{{ $nomor++ }}</td>
                                                 <td>{{ $service->service_name }}</td>
                                                 <td>
-                                                    <a href="" class="btn btn-success btn-xs"> Sub Layanan</a>
+                                                    <a href="{{ route("sublayanan", ["id_layanan" => $service->id]) }}" type="button"
+                                                        class="btn btn-success btn-xs"> {{ $service->sublayanan->count() }} Layanan </button>
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-xs btn-primary" onclick="edit('{{ $service->id }}', '{{ $service->service_name }}')">
+                                                    <button type="button" onclick="tambahSub('{{ $service->id }}')"
+                                                        class="btn btn-success btn-xs"> <i class="fas fa-plus"></i> Tambah </button> |
+                                                    <button class="btn btn-xs btn-primary"
+                                                        onclick="edit('{{ $service->id }}', '{{ $service->service_name }}')">
                                                         <i class="fas fa-edit"></i>
                                                         Edit
                                                     </button>|
-                                                    <form id="delete{{ $service->id }}" action="{{ route('layanan.crud', ['id'=> $service->id]) }}"
+                                                    <form id="delete{{ $service->id }}"
+                                                        action="{{ route('layanan.crud', ['id' => $service->id]) }}"
                                                         style="display: inline-block;" method="POST">
                                                         @csrf
                                                         @method('delete')
@@ -112,14 +117,27 @@
                     @csrf
                     <div class="modal-body">
 
-                        <div class="form-group">
-                            <label for="layanan">Nama Layanan</label>
-                            <input type="text" name="name"
-                                class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="layanan"
-                                placeholder="Masukan Nama Layanan" aria-describedby="layanan-error"
-                                aria-invalid="false" required>
-                            <span id="layanan-error" class="error invalid-feedback">
-                                {{ $errors->has('name') ? '*) ' . $errors->first('name') : '' }}</span>
+                        <div id="layanan">
+                            <div class="form-group">
+                                <label for="layanan">Nama Layanan</label>
+                                <input type="text" name="name"
+                                    class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="layanan"
+                                    placeholder="Masukan Nama Layanan" aria-describedby="layanan-error"
+                                    aria-invalid="false" required>
+                                <span id="layanan-error" class="error invalid-feedback">
+                                    {{ $errors->has('name') ? '*) ' . $errors->first('name') : '' }}</span>
+                            </div>
+                        </div>
+
+                        <div id="sub-layanan">
+                            <div class="form-group">
+                                <label for="merk">Pilih Merk Mobil</label>
+                                <select name="merk" id="" class="form-control">
+                                    @foreach ($merk as $value)
+                                        <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                     </div>
@@ -158,22 +176,39 @@
             });
 
             function resetform() {
+                $("#sub-layanan").css("display", "none");
+                $("#layanan").css("display", "block");
                 $(".modal-title").html("Tambah Layanan");
                 $("input[name=_method]").remove();
-                var url = '<?= route("layanan") ?>';
+                var url = '<?= route('layanan') ?>';
                 $("#myForm").attr("action", url);
                 $("input[name=name]").val("");
                 $("#modal-sm").modal("show");
             }
 
             function edit(id, name) {
+                $("#sub-layanan").css("display", "none");
+                $("#layanan").css("display", "block");
                 $(".modal-title").html("Edit Layanan");
                 $("#modal-sm").modal("show");
                 var url = '<?= route('layanan.crud', ['id' => ':id']) ?>';
                 url = url.replace(":id", id);
-                $(".modal-body").append('{{ method_field('PUT') }}')
+                $(".modal-body").append('<?= method_field('PUT') ?>')
                 $("#myForm").attr("action", url);
                 $("input[name=name]").val(name);
+            }
+
+            function tambahSub(id_layanan) {
+                var url = '<?= route("sublayanan", ["id_layanan" => ":id_layanan"]) ?>';
+                url = url.replace(":id_layanan", id_layanan)
+                $("#myForm").attr("action", url);
+                $("#modal-sm").modal("show");
+                $("#sub-layanan").css("display", "block");
+                $("#layanan").css("display", "none");
+                $(".modal-title").html("Tambah Sub Layanan");
+                $("input[name=name]").val("name");
+                $("input[name=_method]").remove();
+             
             }
 
             function confirmHapus(id) {

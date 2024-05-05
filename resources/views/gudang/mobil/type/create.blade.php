@@ -29,7 +29,6 @@
                                     Field</button>
                             </div>
                         </div>
-                        {{-- @include('gudang.mobil.type.form') --}}
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Simpan Data</button>
                         </div>
