@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\KaryawanController;
+use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Gudang\MasterProdukController;
@@ -58,6 +59,14 @@ Route::middleware(["auth", "user-role:superuser|superadmin"])->group(function ()
 });
 
 Route::middleware(["auth", "user-role:superuser|superadmin|admin"])->group(function () {
+
+    Route::controller(ServiceController::class)->group(function(){
+        Route::get("/layanan", "index")->name("layanan");
+        Route::delete("/layanan/{id}", "destroy")->name("layanan.crud");
+        Route::put("/layanan/{id}", "update");
+        Route::post("/layanan", "store");
+        
+    });
 
     Route::controller(TypeMobilController::class)->group(function () {
         Route::get("/mobil/{id_merk}/type", "index")->name("gudang.mobil.type");

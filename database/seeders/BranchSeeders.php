@@ -62,16 +62,7 @@ class BranchSeeders extends Seeder
         });
 
         //tambah vendor
-        collect([
-            [
-                "chief_id" => 1,
-                "name" => "Astra Honda Motor",
-                "address" => "Jl. Laksda Yos Sudarso - Sunter 1 Jakarta 14350, Indonesia",
-                "phone" => "8119500989"
-            ]
-        ])->each(function($vendor){
-            Vendor::create($vendor);
-        });
+        
 
         //tambah mobil
         collect([

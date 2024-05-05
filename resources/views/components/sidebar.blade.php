@@ -99,6 +99,14 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ route('layanan') }}" class="nav-link {{ $menuActive == 'service' ? 'active' : '' }}">
+                            <i class="fas fas fa-wrench nav-icon"></i>
+                            <p>
+                                Data Layanan
+                            </p>
+                        </a>
+                    </li>
                 
                     <li class="nav-item {{ $menuOpen == 'produk' ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ $menuOpen == 'produk' ? 'active' : '' }}">
