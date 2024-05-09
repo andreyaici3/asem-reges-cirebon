@@ -235,9 +235,9 @@ return [
         'DNS2D' => \Milon\Barcode\Facades\DNS2DFacade::class,
     ],
 
-    "author" => "AA Yana Maulana Akbar",
+    "author" => "RD Development",
     "created" => "Jum'at, 5 Januari 2024",
-    "copyright" => date('Y'),
+    "copyright" => date('Y') . " - " . date("Y") + 1,
     "version" => "1.0",
 
 ];
