@@ -67,6 +67,7 @@ Route::middleware(["auth", "user-role:superuser|superadmin|admin"])->group(funct
         Route::post("/layanan", "store");
         Route::post("/layanan/sub/{id_layanan}", "createSub")->name("sublayanan");
         Route::get("/layanan/sub/{id_layanan}", "detailSub");
+        Route::put("/layanan/sub/{id_layanan}", "saveAllSub");
         Route::post("/layanan/sub/{id_layanan}/create", "storeSub")->name("sublayanan.store");
         
     });

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Gudang;
 use App\Http\Controllers\Controller;
 use App\Models\CarMerk;
 use App\Models\CarType;
+use App\Models\Service;
+use App\Models\SubService;
 use Illuminate\Http\Request;
 
 class TypeMobilController extends Controller
@@ -33,12 +35,23 @@ class TypeMobilController extends Controller
 
         try {
             for ($i = 0; $i < count($request->jenis); $i++) {
-                CarType::create([
+                $type = CarType::create([
                     "merk_id" => $id_merk,
                     "jenis" => $request->jenis[$i],
                     "tipe" => $request->tipe[$i],
                     "tahun" => $request->tahun[$i],
                 ]);
+                $services = Service::get();
+                foreach ($services as $service){
+                    SubService::create(
+                        [
+                            "service_id" => $service->id,
+                            "id_type" => $type->id,
+                            "harga_jasa" => 0,
+                            "harga_jasa_khusus" => 0
+                        ]
+                    );
+                }
             }
 
             return redirect()->to(route('gudang.mobil.type', ["id_merk" => $id_merk]))->with('sukses', "Data type Mobil Berhasil Ditambahkan");

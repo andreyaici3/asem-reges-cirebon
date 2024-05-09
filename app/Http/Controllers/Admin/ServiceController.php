@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CarMerk;
+use App\Models\CarType;
 use App\Models\Service;
 use App\Models\SubService;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Return_;
 
 class ServiceController extends Controller
 {
@@ -21,9 +23,19 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         try {
-            Service::create([
+            $service = Service::create([
                 "service_name" => $request->name,
             ]);
+
+            $type = CarType::get();
+            foreach ($type as $value){
+                SubService::create([
+                    "service_id" => $service->id,
+                    "id_type" => $value->id,
+                    "harga_jasa" => 0,
+                    "harga_jasa_khusus" => 0,
+                ]);
+            }
             return redirect()->to(route("layanan"))->with('sukses', "Data Layanan Berhasil Ditambahkan");
         } catch (\Illuminate\Database\QueryException $e) {
             return redirect()->to(route("layanan"))->with('gagal', "Data Layanan Gagal Ditambahkan");
@@ -91,5 +103,15 @@ class ServiceController extends Controller
         return view("admin.layanan.detail-sub-layanan", [
             "subs" => $subLayanan
         ]);
+    }
+
+    public function saveAllSub(Request $request, $id_layanan){
+        foreach ($request->harga_jasa as $key => $value){
+            SubService::find($key)->update([
+                "harga_jasa" => $request->harga_jasa[$key],
+                "harga_jasa_khusus" => $request->harga_jasa_khusus[$key]
+            ]);
+        }
+        return redirect()->to(route("sublayanan", ["id_layanan" => $id_layanan]))->with('sukses', "Data Layanan Berhasil Disimpan");
     }
 }

@@ -95,18 +95,18 @@ class BranchSeeders extends Seeder
         });
 
         collect([
-            [
-                "merk_id" => 1,
-                "jenis" => "Charade",
-                "tipe" => "CX",
-                "tahun" => "2020"
-            ],
-            [
-                "merk_id" => 1,
-                "jenis" => "Hi-Jet",
-                "tipe" => "1000",
-                "tahun" => "2020"
-            ],
+            // [
+            //     "merk_id" => 1,
+            //     "jenis" => "Charade",
+            //     "tipe" => "CX",
+            //     "tahun" => "2020"
+            // ],
+            // [
+            //     "merk_id" => 1,
+            //     "jenis" => "Hi-Jet",
+            //     "tipe" => "1000",
+            //     "tahun" => "2020"
+            // ],
         ])->each(function($typeMobil){
             CarType::create($typeMobil);
         });
