@@ -28,10 +28,11 @@ class ServiceController extends Controller
             ]);
 
             $type = CarType::get();
-            foreach ($type as $value){
+            foreach ($type as $value) {
                 SubService::create([
                     "service_id" => $service->id,
                     "id_type" => $value->id,
+                    "id_merk" => $value->merk_id,
                     "harga_jasa" => 0,
                     "harga_jasa_khusus" => 0,
                 ]);
@@ -97,16 +98,35 @@ class ServiceController extends Controller
         }
     }
 
-    public function detailSub($id_layanan)
+    public function detailSub(Request $request, $id_layanan)
     {
-        $subLayanan = Service::findOrFail($id_layanan);
+        if ($request->get("merk") != null) {
+            $merk = $request->get("merk");
+            $sub1 = SubService::where([
+                ["id_merk", "=", $request->get("merk")],
+                ["service_id", "=", $id_layanan]
+            ])->get();
+            $subLayanan = Service::findOrFail($id_layanan);
+            
+        } else {
+            $sub1 = SubService::where([
+                ["id_merk", "=", $request->get("merk")],
+                ["service_id", "=", Service::first()->id]
+            ])->get();
+            $subLayanan = Service::findOrFail($id_layanan);
+        }        
+        
+        $merk = CarMerk::get();
         return view("admin.layanan.detail-sub-layanan", [
-            "subs" => $subLayanan
+            "subs" => $subLayanan,
+            "merk" => $merk,
+            "sub1" => $sub1,
         ]);
     }
 
-    public function saveAllSub(Request $request, $id_layanan){
-        foreach ($request->harga_jasa as $key => $value){
+    public function saveAllSub(Request $request, $id_layanan)
+    {
+        foreach ($request->harga_jasa as $key => $value) {
             SubService::find($key)->update([
                 "harga_jasa" => $request->harga_jasa[$key],
                 "harga_jasa_khusus" => $request->harga_jasa_khusus[$key]

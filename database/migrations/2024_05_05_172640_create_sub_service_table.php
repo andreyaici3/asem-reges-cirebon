@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\CarMerk;
 use App\Models\CarType;
 use App\Models\Service;
 use Illuminate\Database\Migrations\Migration;
@@ -18,6 +19,7 @@ class CreateSubServiceTable extends Migration
         Schema::create('sub_service', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Service::class, "service_id")->constrained("service");
+            $table->foreignIdFor(CarMerk::class, "id_merk")->constrained("car_merk");
             $table->foreignIdFor(CarType::class, "id_type")->constrained("car_type");
             $table->double("harga_jasa")->default(0);
             $table->double("harga_jasa_khusus")->default(0);

@@ -11,7 +11,7 @@ class SubService extends Model
 
     protected $table = "sub_service";
 
-    protected $fillable = ["service_id", "id_type", "harga_jasa", "harga_jasa_khusus"];
+    protected $fillable = ["service_id", "id_type", "id_merk", "harga_jasa", "harga_jasa_khusus"];
 
     public function jenis()
     {

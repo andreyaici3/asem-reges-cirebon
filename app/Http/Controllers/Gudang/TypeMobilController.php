@@ -46,6 +46,7 @@ class TypeMobilController extends Controller
                     SubService::create(
                         [
                             "service_id" => $service->id,
+                            "id_merk" => $type->merk_id,
                             "id_type" => $type->id,
                             "harga_jasa" => 0,
                             "harga_jasa_khusus" => 0

@@ -13,6 +13,32 @@
     @endsection
 
     <div class="container-fluid">
+        <form action="" method="get">
+            <div class="row">
+                <div class="col-md-12 col-lg-3">
+                    <div class="form-group">
+                        <label>Merk Mobil</label>
+                        <select name="merk" class="form-control">
+                            <option value="null">-- Reset --</option>
+                            @foreach ($merk as $value)
+                                <option @php
+                                    if (request()->get("merk") == $value->id){
+                                        echo "selected";
+                                    }
+                                @endphp value="{{ $value->id }}">{{ $value->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>
+                </div>
+            </div>
+        </form>
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -63,13 +89,11 @@
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
-
+                                        @php
+                                            $nomor =1 ;
+                                        @endphp
                                         <tbody>
-
-                                            @php
-                                                $nomor = 1;
-                                            @endphp
-                                            @foreach ($subs->sublayanan as $sub)
+                                            @foreach ($sub1 as $sub)
                                                 <tr>
                                                     <td>{{ $nomor++ }}</td>
                                                     <td>{{ $sub->jenis->jenis }} - {{ $sub->jenis->tipe }}
@@ -77,14 +101,13 @@
                                                     <td>
                                                         <input type="number" name="harga_jasa[{{ $sub->id }}]"
                                                             id="harga_jasa[{{ $sub->id }}]"
-                                                            value="{{ $sub->harga_jasa }}"
-                                                            class="form-control">
+                                                            value="{{ $sub->harga_jasa }}" class="form-control">
                                                     </td>
                                                     <td>
-                                                        <input type="number" name="harga_jasa_khusus[{{ $sub->id }}]"
+                                                        <input type="number"
+                                                            name="harga_jasa_khusus[{{ $sub->id }}]"
                                                             id="harga_jasa_khusus[{{ $sub->id }}]"
-                                                            value="{{ $sub->harga_jasa_khusus }}"
-                                                            class="form-control">
+                                                            value="{{ $sub->harga_jasa_khusus }}" class="form-control">
 
                                                     </td>
                                                     <td>Rp.
